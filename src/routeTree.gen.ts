@@ -16,6 +16,11 @@ import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
+import { Route as AuthenticatedSistemaUsuariosRouteRouteImport } from './routes/_authenticated/sistema/usuarios/route'
+import { Route as AuthenticatedSistemaPermisosRouteRouteImport } from './routes/_authenticated/sistema/permisos/route'
+import { Route as AuthenticatedSistemaParametrosRouteRouteImport } from './routes/_authenticated/sistema/parametros/route'
+import { Route as AuthenticatedSistemaFuncionalidadesRouteRouteImport } from './routes/_authenticated/sistema/funcionalidades/route'
+import { Route as AuthenticatedSistemaModulosIndexRouteImport } from './routes/_authenticated/sistema/modulos/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -51,6 +56,36 @@ const errors401Route = errors401RouteImport.update({
   path: '/401',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSistemaUsuariosRouteRoute =
+  AuthenticatedSistemaUsuariosRouteRouteImport.update({
+    id: '/sistema/usuarios',
+    path: '/sistema/usuarios',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSistemaPermisosRouteRoute =
+  AuthenticatedSistemaPermisosRouteRouteImport.update({
+    id: '/sistema/permisos',
+    path: '/sistema/permisos',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSistemaParametrosRouteRoute =
+  AuthenticatedSistemaParametrosRouteRouteImport.update({
+    id: '/sistema/parametros',
+    path: '/sistema/parametros',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSistemaFuncionalidadesRouteRoute =
+  AuthenticatedSistemaFuncionalidadesRouteRouteImport.update({
+    id: '/sistema/funcionalidades',
+    path: '/sistema/funcionalidades',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSistemaModulosIndexRoute =
+  AuthenticatedSistemaModulosIndexRouteImport.update({
+    id: '/sistema/modulos/',
+    path: '/sistema/modulos/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/401': typeof errors401Route
@@ -59,6 +94,11 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/sistema/funcionalidades': typeof AuthenticatedSistemaFuncionalidadesRouteRoute
+  '/sistema/parametros': typeof AuthenticatedSistemaParametrosRouteRoute
+  '/sistema/permisos': typeof AuthenticatedSistemaPermisosRouteRoute
+  '/sistema/usuarios': typeof AuthenticatedSistemaUsuariosRouteRoute
+  '/sistema/modulos': typeof AuthenticatedSistemaModulosIndexRoute
 }
 export interface FileRoutesByTo {
   '/401': typeof errors401Route
@@ -67,6 +107,11 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/sistema/funcionalidades': typeof AuthenticatedSistemaFuncionalidadesRouteRoute
+  '/sistema/parametros': typeof AuthenticatedSistemaParametrosRouteRoute
+  '/sistema/permisos': typeof AuthenticatedSistemaPermisosRouteRoute
+  '/sistema/usuarios': typeof AuthenticatedSistemaUsuariosRouteRoute
+  '/sistema/modulos': typeof AuthenticatedSistemaModulosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,12 +122,39 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/sistema/funcionalidades': typeof AuthenticatedSistemaFuncionalidadesRouteRoute
+  '/_authenticated/sistema/parametros': typeof AuthenticatedSistemaParametrosRouteRoute
+  '/_authenticated/sistema/permisos': typeof AuthenticatedSistemaPermisosRouteRoute
+  '/_authenticated/sistema/usuarios': typeof AuthenticatedSistemaUsuariosRouteRoute
+  '/_authenticated/sistema/modulos/': typeof AuthenticatedSistemaModulosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/401' | '/403' | '/404' | '/500' | '/503' | '/'
+  fullPaths:
+    | '/401'
+    | '/403'
+    | '/404'
+    | '/500'
+    | '/503'
+    | '/'
+    | '/sistema/funcionalidades'
+    | '/sistema/parametros'
+    | '/sistema/permisos'
+    | '/sistema/usuarios'
+    | '/sistema/modulos'
   fileRoutesByTo: FileRoutesByTo
-  to: '/401' | '/403' | '/404' | '/500' | '/503' | '/'
+  to:
+    | '/401'
+    | '/403'
+    | '/404'
+    | '/500'
+    | '/503'
+    | '/'
+    | '/sistema/funcionalidades'
+    | '/sistema/parametros'
+    | '/sistema/permisos'
+    | '/sistema/usuarios'
+    | '/sistema/modulos'
   id:
     | '__root__'
     | '/_authenticated'
@@ -92,6 +164,11 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/sistema/funcionalidades'
+    | '/_authenticated/sistema/parametros'
+    | '/_authenticated/sistema/permisos'
+    | '/_authenticated/sistema/usuarios'
+    | '/_authenticated/sistema/modulos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -154,15 +231,64 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof errors401RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/sistema/usuarios': {
+      id: '/_authenticated/sistema/usuarios'
+      path: '/sistema/usuarios'
+      fullPath: '/sistema/usuarios'
+      preLoaderRoute: typeof AuthenticatedSistemaUsuariosRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sistema/permisos': {
+      id: '/_authenticated/sistema/permisos'
+      path: '/sistema/permisos'
+      fullPath: '/sistema/permisos'
+      preLoaderRoute: typeof AuthenticatedSistemaPermisosRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sistema/parametros': {
+      id: '/_authenticated/sistema/parametros'
+      path: '/sistema/parametros'
+      fullPath: '/sistema/parametros'
+      preLoaderRoute: typeof AuthenticatedSistemaParametrosRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sistema/funcionalidades': {
+      id: '/_authenticated/sistema/funcionalidades'
+      path: '/sistema/funcionalidades'
+      fullPath: '/sistema/funcionalidades'
+      preLoaderRoute: typeof AuthenticatedSistemaFuncionalidadesRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sistema/modulos/': {
+      id: '/_authenticated/sistema/modulos/'
+      path: '/sistema/modulos'
+      fullPath: '/sistema/modulos'
+      preLoaderRoute: typeof AuthenticatedSistemaModulosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedSistemaFuncionalidadesRouteRoute: typeof AuthenticatedSistemaFuncionalidadesRouteRoute
+  AuthenticatedSistemaParametrosRouteRoute: typeof AuthenticatedSistemaParametrosRouteRoute
+  AuthenticatedSistemaPermisosRouteRoute: typeof AuthenticatedSistemaPermisosRouteRoute
+  AuthenticatedSistemaUsuariosRouteRoute: typeof AuthenticatedSistemaUsuariosRouteRoute
+  AuthenticatedSistemaModulosIndexRoute: typeof AuthenticatedSistemaModulosIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedSistemaFuncionalidadesRouteRoute:
+    AuthenticatedSistemaFuncionalidadesRouteRoute,
+  AuthenticatedSistemaParametrosRouteRoute:
+    AuthenticatedSistemaParametrosRouteRoute,
+  AuthenticatedSistemaPermisosRouteRoute:
+    AuthenticatedSistemaPermisosRouteRoute,
+  AuthenticatedSistemaUsuariosRouteRoute:
+    AuthenticatedSistemaUsuariosRouteRoute,
+  AuthenticatedSistemaModulosIndexRoute: AuthenticatedSistemaModulosIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
