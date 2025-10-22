@@ -32,36 +32,36 @@ export default function Dashboard() {
       {/* ===== Main ===== */}
       <Main>
         <div className='mb-2 flex items-center justify-between space-y-2'>
-          <h1 className='text-2xl font-bold tracking-tight'>Dashboard</h1>
-          <div className='flex items-center space-x-2'>
-            <Button>Download</Button>
-          </div>
+          <h1 className='text-2xl font-bold tracking-tight'>Panel de Control</h1>
+          {/* <div className='flex items-center space-x-2'> */}
+          {/*   <Button>Download</Button> */}
+          {/* </div> */}
         </div>
         <Tabs
           orientation='vertical'
           defaultValue='overview'
           className='space-y-4'
         >
-          <div className='w-full overflow-x-auto pb-2'>
-            <TabsList>
-              <TabsTrigger value='overview'>Overview</TabsTrigger>
-              <TabsTrigger value='analytics' disabled>
-                Analytics
-              </TabsTrigger>
-              <TabsTrigger value='reports' disabled>
-                Reports
-              </TabsTrigger>
-              <TabsTrigger value='notifications' disabled>
-                Notifications
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          {/* <div className='w-full overflow-x-auto pb-2'> */}
+          {/*   <TabsList> */}
+          {/*     <TabsTrigger value='overview'>Overview</TabsTrigger> */}
+          {/*     <TabsTrigger value='analytics' disabled> */}
+          {/*       Analytics */}
+          {/*     </TabsTrigger> */}
+          {/*     <TabsTrigger value='reports' disabled> */}
+          {/*       Reports */}
+          {/*     </TabsTrigger> */}
+          {/*     <TabsTrigger value='notifications' disabled> */}
+          {/*       Notifications */}
+          {/*     </TabsTrigger> */}
+          {/*   </TabsList> */}
+          {/* </div> */}
           <TabsContent value='overview' className='space-y-4'>
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Total Revenue
+                    Costo de Servicio
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -86,7 +86,7 @@ export default function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Subscriptions
+                    Velocidad
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -112,7 +112,7 @@ export default function Dashboard() {
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>Sales</CardTitle>
+                  <CardTitle className='text-sm font-medium'>Tokens</CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     viewBox='0 0 24 24'
@@ -137,7 +137,7 @@ export default function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Active Now
+                    Usuarios Activos
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -163,7 +163,7 @@ export default function Dashboard() {
             <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
               <Card className='col-span-1 lg:col-span-4'>
                 <CardHeader>
-                  <CardTitle>Overview</CardTitle>
+                  <CardTitle>Resumen</CardTitle>
                 </CardHeader>
                 <CardContent className='pl-2'>
                   <Overview />
@@ -171,7 +171,7 @@ export default function Dashboard() {
               </Card>
               <Card className='col-span-1 lg:col-span-3'>
                 <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
+                  <CardTitle>Ultimos Documentos</CardTitle>
                   <CardDescription>
                     You made 265 sales this month.
                   </CardDescription>
@@ -188,29 +188,29 @@ export default function Dashboard() {
   )
 }
 
-const topNav = [
-  {
-    title: 'Overview',
-    href: 'dashboard/overview',
-    isActive: true,
-    disabled: false,
-  },
-  {
-    title: 'Customers',
-    href: 'dashboard/customers',
-    isActive: false,
-    disabled: true,
-  },
-  {
-    title: 'Products',
-    href: 'dashboard/products',
-    isActive: false,
-    disabled: true,
-  },
-  {
-    title: 'Settings',
-    href: 'dashboard/settings',
-    isActive: false,
-    disabled: true,
-  },
+const topNav: any[] = [
+  // {
+  //   title: 'Overview',
+  //   href: 'dashboard/overview',
+  //   isActive: true,
+  //   disabled: false,
+  // },
+  // {
+  //   title: 'Customers',
+  //   href: 'dashboard/customers',
+  //   isActive: false,
+  //   disabled: true,
+  // },
+  // {
+  //   title: 'Products',
+  //   href: 'dashboard/products',
+  //   isActive: false,
+  //   disabled: true,
+  // },
+  // {
+  //   title: 'Settings',
+  //   href: 'dashboard/settings',
+  //   isActive: false,
+  //   disabled: true,
+  // },
 ]

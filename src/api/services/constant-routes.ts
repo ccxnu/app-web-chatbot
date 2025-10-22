@@ -1,3 +1,9 @@
+// Admin Auth Routes
+export const ADMIN_AUTH_LOGIN = "/admin/auth/login";
+export const ADMIN_AUTH_REFRESH = "/admin/auth/refresh";
+export const ADMIN_AUTH_LOGOUT = "/admin/auth/logout";
+export const ADMIN_USERS_CREATE = "/admin/users/create";
+
 // WhatsApp Routes
 export const WHATSAPP_CONVERSATION_HISTORY = "/admin/whatsapp/conversation-history";
 export const WHATSAPP_QR_CODE = "/admin/whatsapp/qr-code";

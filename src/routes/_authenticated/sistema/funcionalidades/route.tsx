@@ -7,5 +7,5 @@ export const Route = createFileRoute('/_authenticated/sistema/funcionalidades')(
 )
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated/sistema/funcionalidades"!</div>
+  return <div>Hello "/_authenticated/sistema/no longer available"!</div>
 }

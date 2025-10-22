@@ -15,7 +15,7 @@ function buildSolicitud(process: string): IBase {
     return {
         idSession: localStorage.getItem(STORAGE_KEYS.ID_SESSION) || "pruebaSession",
         idRequest: crypto.randomUUID?.(),
-        dateProcess: new Date().toISOString().slice(0, 19),
+        dateProcess: new Date().toISOString(), // RFC 3339 completo con timezone
         process,
         idDevice: localStorage.getItem(STORAGE_KEYS.ID_DEVICE) || "unknown",
         deviceAddress: localStorage.getItem(STORAGE_KEYS.DEVICE_ADDRESS) || "0.0.0.0",

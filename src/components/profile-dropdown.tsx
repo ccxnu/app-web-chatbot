@@ -1,5 +1,5 @@
-import { Link } from '@tanstack/react-router'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -8,56 +8,75 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useAuth } from '@/context/auth-context'
+import { useAdminLogout } from '@/api/services'
+import { BadgeCheck, LogOut, Settings } from 'lucide-react'
 
 export function ProfileDropdown() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+  const logoutMutation = useAdminLogout()
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync()
+      navigate({ to: '/iniciar-sesion' })
+    } catch (error) {
+      // Error already handled by mutation
+      navigate({ to: '/iniciar-sesion' })
+    }
+  }
+
+  if (!user) return null
+
+  // Generate initials from name
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
           <Avatar className='h-8 w-8'>
-            <AvatarFallback>SN</AvatarFallback>
+			<AvatarFallback className='rounded-lg'>{getInitials(user.name)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' forceMount>
         <DropdownMenuLabel className='font-normal'>
           <div className='flex flex-col space-y-1'>
-            <p className='text-sm leading-none font-medium'>satnaing</p>
-            <p className='text-muted-foreground text-xs leading-none'>
-              satnaingdev@gmail.com
-            </p>
+			<span className='truncate font-semibold'>{user.name}</span>
+			<span className='truncate text-xs'>{user.email}</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link to='/settings'>
-              Profile
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-            </Link>
+			<Link to='/configuration'>
+			  <Settings />
+			  Configuración
+			</Link>
+		  </DropdownMenuItem>
+		  <DropdownMenuItem asChild>
+			<Link to='/configuration'>
+			  <BadgeCheck />
+			  Mi Perfil
+			</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to='/settings'>
-              Billing
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to='/settings'>
-              Settings
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+		<DropdownMenuItem onClick={handleLogout} disabled={logoutMutation.isPending}>
+		  <LogOut />
+		  {logoutMutation.isPending ? 'Cerrando sesión...' : 'Cerrar Sesión'}
+		</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

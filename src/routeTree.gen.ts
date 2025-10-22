@@ -10,27 +10,41 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPanelDeControlRouteImport } from './routes/_authenticated/panel-de-control'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
+import { Route as authOlvideMiContrasenaRouteImport } from './routes/(auth)/olvide-mi-contrasena'
+import { Route as authIniciarSesionRouteImport } from './routes/(auth)/iniciar-sesion'
+import { Route as AuthenticatedWhatsappIndexRouteImport } from './routes/_authenticated/whatsapp/index'
+import { Route as AuthenticatedUsuariosIndexRouteImport } from './routes/_authenticated/usuarios/index'
+import { Route as AuthenticatedRagIndexRouteImport } from './routes/_authenticated/rag/index'
+import { Route as AuthenticatedEstadisticasIndexRouteImport } from './routes/_authenticated/estadisticas/index'
+import { Route as AuthenticatedConfigurationIndexRouteImport } from './routes/_authenticated/configuration/index'
+import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
 import { Route as AuthenticatedSistemaUsuariosRouteRouteImport } from './routes/_authenticated/sistema/usuarios/route'
 import { Route as AuthenticatedSistemaPermisosRouteRouteImport } from './routes/_authenticated/sistema/permisos/route'
 import { Route as AuthenticatedSistemaParametrosRouteRouteImport } from './routes/_authenticated/sistema/parametros/route'
 import { Route as AuthenticatedSistemaFuncionalidadesRouteRouteImport } from './routes/_authenticated/sistema/funcionalidades/route'
-import { Route as AuthenticatedSistemaModulosIndexRouteImport } from './routes/_authenticated/sistema/modulos/index'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPanelDeControlRoute =
+  AuthenticatedPanelDeControlRouteImport.update({
+    id: '/panel-de-control',
+    path: '/panel-de-control',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const errors503Route = errors503RouteImport.update({
   id: '/(errors)/503',
   path: '/503',
@@ -56,6 +70,50 @@ const errors401Route = errors401RouteImport.update({
   path: '/401',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authOlvideMiContrasenaRoute = authOlvideMiContrasenaRouteImport.update({
+  id: '/(auth)/olvide-mi-contrasena',
+  path: '/olvide-mi-contrasena',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authIniciarSesionRoute = authIniciarSesionRouteImport.update({
+  id: '/(auth)/iniciar-sesion',
+  path: '/iniciar-sesion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedWhatsappIndexRoute =
+  AuthenticatedWhatsappIndexRouteImport.update({
+    id: '/whatsapp/',
+    path: '/whatsapp/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedUsuariosIndexRoute =
+  AuthenticatedUsuariosIndexRouteImport.update({
+    id: '/usuarios/',
+    path: '/usuarios/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRagIndexRoute = AuthenticatedRagIndexRouteImport.update({
+  id: '/rag/',
+  path: '/rag/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedEstadisticasIndexRoute =
+  AuthenticatedEstadisticasIndexRouteImport.update({
+    id: '/estadisticas/',
+    path: '/estadisticas/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedConfigurationIndexRoute =
+  AuthenticatedConfigurationIndexRouteImport.update({
+    id: '/configuration/',
+    path: '/configuration/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedChatsIndexRoute = AuthenticatedChatsIndexRouteImport.update({
+  id: '/chats/',
+  path: '/chats/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSistemaUsuariosRouteRoute =
   AuthenticatedSistemaUsuariosRouteRouteImport.update({
     id: '/sistema/usuarios',
@@ -80,99 +138,144 @@ const AuthenticatedSistemaFuncionalidadesRouteRoute =
     path: '/sistema/funcionalidades',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedSistemaModulosIndexRoute =
-  AuthenticatedSistemaModulosIndexRouteImport.update({
-    id: '/sistema/modulos/',
-    path: '/sistema/modulos/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/iniciar-sesion': typeof authIniciarSesionRoute
+  '/olvide-mi-contrasena': typeof authOlvideMiContrasenaRoute
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/': typeof AuthenticatedIndexRoute
+  '/panel-de-control': typeof AuthenticatedPanelDeControlRoute
   '/sistema/funcionalidades': typeof AuthenticatedSistemaFuncionalidadesRouteRoute
   '/sistema/parametros': typeof AuthenticatedSistemaParametrosRouteRoute
   '/sistema/permisos': typeof AuthenticatedSistemaPermisosRouteRoute
   '/sistema/usuarios': typeof AuthenticatedSistemaUsuariosRouteRoute
-  '/sistema/modulos': typeof AuthenticatedSistemaModulosIndexRoute
+  '/chats': typeof AuthenticatedChatsIndexRoute
+  '/configuration': typeof AuthenticatedConfigurationIndexRoute
+  '/estadisticas': typeof AuthenticatedEstadisticasIndexRoute
+  '/rag': typeof AuthenticatedRagIndexRoute
+  '/usuarios': typeof AuthenticatedUsuariosIndexRoute
+  '/whatsapp': typeof AuthenticatedWhatsappIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/iniciar-sesion': typeof authIniciarSesionRoute
+  '/olvide-mi-contrasena': typeof authOlvideMiContrasenaRoute
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/': typeof AuthenticatedIndexRoute
+  '/panel-de-control': typeof AuthenticatedPanelDeControlRoute
   '/sistema/funcionalidades': typeof AuthenticatedSistemaFuncionalidadesRouteRoute
   '/sistema/parametros': typeof AuthenticatedSistemaParametrosRouteRoute
   '/sistema/permisos': typeof AuthenticatedSistemaPermisosRouteRoute
   '/sistema/usuarios': typeof AuthenticatedSistemaUsuariosRouteRoute
-  '/sistema/modulos': typeof AuthenticatedSistemaModulosIndexRoute
+  '/chats': typeof AuthenticatedChatsIndexRoute
+  '/configuration': typeof AuthenticatedConfigurationIndexRoute
+  '/estadisticas': typeof AuthenticatedEstadisticasIndexRoute
+  '/rag': typeof AuthenticatedRagIndexRoute
+  '/usuarios': typeof AuthenticatedUsuariosIndexRoute
+  '/whatsapp': typeof AuthenticatedWhatsappIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/(auth)/iniciar-sesion': typeof authIniciarSesionRoute
+  '/(auth)/olvide-mi-contrasena': typeof authOlvideMiContrasenaRoute
   '/(errors)/401': typeof errors401Route
   '/(errors)/403': typeof errors403Route
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
-  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/panel-de-control': typeof AuthenticatedPanelDeControlRoute
   '/_authenticated/sistema/funcionalidades': typeof AuthenticatedSistemaFuncionalidadesRouteRoute
   '/_authenticated/sistema/parametros': typeof AuthenticatedSistemaParametrosRouteRoute
   '/_authenticated/sistema/permisos': typeof AuthenticatedSistemaPermisosRouteRoute
   '/_authenticated/sistema/usuarios': typeof AuthenticatedSistemaUsuariosRouteRoute
-  '/_authenticated/sistema/modulos/': typeof AuthenticatedSistemaModulosIndexRoute
+  '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
+  '/_authenticated/configuration/': typeof AuthenticatedConfigurationIndexRoute
+  '/_authenticated/estadisticas/': typeof AuthenticatedEstadisticasIndexRoute
+  '/_authenticated/rag/': typeof AuthenticatedRagIndexRoute
+  '/_authenticated/usuarios/': typeof AuthenticatedUsuariosIndexRoute
+  '/_authenticated/whatsapp/': typeof AuthenticatedWhatsappIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/iniciar-sesion'
+    | '/olvide-mi-contrasena'
     | '/401'
     | '/403'
     | '/404'
     | '/500'
     | '/503'
-    | '/'
+    | '/panel-de-control'
     | '/sistema/funcionalidades'
     | '/sistema/parametros'
     | '/sistema/permisos'
     | '/sistema/usuarios'
-    | '/sistema/modulos'
+    | '/chats'
+    | '/configuration'
+    | '/estadisticas'
+    | '/rag'
+    | '/usuarios'
+    | '/whatsapp'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
+    | '/iniciar-sesion'
+    | '/olvide-mi-contrasena'
     | '/401'
     | '/403'
     | '/404'
     | '/500'
     | '/503'
-    | '/'
+    | '/panel-de-control'
     | '/sistema/funcionalidades'
     | '/sistema/parametros'
     | '/sistema/permisos'
     | '/sistema/usuarios'
-    | '/sistema/modulos'
+    | '/chats'
+    | '/configuration'
+    | '/estadisticas'
+    | '/rag'
+    | '/usuarios'
+    | '/whatsapp'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
+    | '/(auth)/iniciar-sesion'
+    | '/(auth)/olvide-mi-contrasena'
     | '/(errors)/401'
     | '/(errors)/403'
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
-    | '/_authenticated/'
+    | '/_authenticated/panel-de-control'
     | '/_authenticated/sistema/funcionalidades'
     | '/_authenticated/sistema/parametros'
     | '/_authenticated/sistema/permisos'
     | '/_authenticated/sistema/usuarios'
-    | '/_authenticated/sistema/modulos/'
+    | '/_authenticated/chats/'
+    | '/_authenticated/configuration/'
+    | '/_authenticated/estadisticas/'
+    | '/_authenticated/rag/'
+    | '/_authenticated/usuarios/'
+    | '/_authenticated/whatsapp/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  authIniciarSesionRoute: typeof authIniciarSesionRoute
+  authOlvideMiContrasenaRoute: typeof authOlvideMiContrasenaRoute
   errors401Route: typeof errors401Route
   errors403Route: typeof errors403Route
   errors404Route: typeof errors404Route
@@ -189,11 +292,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/': {
-      id: '/_authenticated/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/panel-de-control': {
+      id: '/_authenticated/panel-de-control'
+      path: '/panel-de-control'
+      fullPath: '/panel-de-control'
+      preLoaderRoute: typeof AuthenticatedPanelDeControlRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/(errors)/503': {
@@ -231,6 +341,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof errors401RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(auth)/olvide-mi-contrasena': {
+      id: '/(auth)/olvide-mi-contrasena'
+      path: '/olvide-mi-contrasena'
+      fullPath: '/olvide-mi-contrasena'
+      preLoaderRoute: typeof authOlvideMiContrasenaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/iniciar-sesion': {
+      id: '/(auth)/iniciar-sesion'
+      path: '/iniciar-sesion'
+      fullPath: '/iniciar-sesion'
+      preLoaderRoute: typeof authIniciarSesionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/whatsapp/': {
+      id: '/_authenticated/whatsapp/'
+      path: '/whatsapp'
+      fullPath: '/whatsapp'
+      preLoaderRoute: typeof AuthenticatedWhatsappIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/usuarios/': {
+      id: '/_authenticated/usuarios/'
+      path: '/usuarios'
+      fullPath: '/usuarios'
+      preLoaderRoute: typeof AuthenticatedUsuariosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/rag/': {
+      id: '/_authenticated/rag/'
+      path: '/rag'
+      fullPath: '/rag'
+      preLoaderRoute: typeof AuthenticatedRagIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estadisticas/': {
+      id: '/_authenticated/estadisticas/'
+      path: '/estadisticas'
+      fullPath: '/estadisticas'
+      preLoaderRoute: typeof AuthenticatedEstadisticasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuration/': {
+      id: '/_authenticated/configuration/'
+      path: '/configuration'
+      fullPath: '/configuration'
+      preLoaderRoute: typeof AuthenticatedConfigurationIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/chats/': {
+      id: '/_authenticated/chats/'
+      path: '/chats'
+      fullPath: '/chats'
+      preLoaderRoute: typeof AuthenticatedChatsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/sistema/usuarios': {
       id: '/_authenticated/sistema/usuarios'
       path: '/sistema/usuarios'
@@ -259,27 +425,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSistemaFuncionalidadesRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/sistema/modulos/': {
-      id: '/_authenticated/sistema/modulos/'
-      path: '/sistema/modulos'
-      fullPath: '/sistema/modulos'
-      preLoaderRoute: typeof AuthenticatedSistemaModulosIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedPanelDeControlRoute: typeof AuthenticatedPanelDeControlRoute
   AuthenticatedSistemaFuncionalidadesRouteRoute: typeof AuthenticatedSistemaFuncionalidadesRouteRoute
   AuthenticatedSistemaParametrosRouteRoute: typeof AuthenticatedSistemaParametrosRouteRoute
   AuthenticatedSistemaPermisosRouteRoute: typeof AuthenticatedSistemaPermisosRouteRoute
   AuthenticatedSistemaUsuariosRouteRoute: typeof AuthenticatedSistemaUsuariosRouteRoute
-  AuthenticatedSistemaModulosIndexRoute: typeof AuthenticatedSistemaModulosIndexRoute
+  AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
+  AuthenticatedConfigurationIndexRoute: typeof AuthenticatedConfigurationIndexRoute
+  AuthenticatedEstadisticasIndexRoute: typeof AuthenticatedEstadisticasIndexRoute
+  AuthenticatedRagIndexRoute: typeof AuthenticatedRagIndexRoute
+  AuthenticatedUsuariosIndexRoute: typeof AuthenticatedUsuariosIndexRoute
+  AuthenticatedWhatsappIndexRoute: typeof AuthenticatedWhatsappIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedPanelDeControlRoute: AuthenticatedPanelDeControlRoute,
   AuthenticatedSistemaFuncionalidadesRouteRoute:
     AuthenticatedSistemaFuncionalidadesRouteRoute,
   AuthenticatedSistemaParametrosRouteRoute:
@@ -288,14 +452,22 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSistemaPermisosRouteRoute,
   AuthenticatedSistemaUsuariosRouteRoute:
     AuthenticatedSistemaUsuariosRouteRoute,
-  AuthenticatedSistemaModulosIndexRoute: AuthenticatedSistemaModulosIndexRoute,
+  AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
+  AuthenticatedConfigurationIndexRoute: AuthenticatedConfigurationIndexRoute,
+  AuthenticatedEstadisticasIndexRoute: AuthenticatedEstadisticasIndexRoute,
+  AuthenticatedRagIndexRoute: AuthenticatedRagIndexRoute,
+  AuthenticatedUsuariosIndexRoute: AuthenticatedUsuariosIndexRoute,
+  AuthenticatedWhatsappIndexRoute: AuthenticatedWhatsappIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  authIniciarSesionRoute: authIniciarSesionRoute,
+  authOlvideMiContrasenaRoute: authOlvideMiContrasenaRoute,
   errors401Route: errors401Route,
   errors403Route: errors403Route,
   errors404Route: errors404Route,

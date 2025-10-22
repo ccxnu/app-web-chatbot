@@ -3,6 +3,9 @@
  * Central export point for all API services organized by module
  */
 
+// Auth Services
+export * from "./auth";
+
 // Admin Services
 export * from "./admin";
 

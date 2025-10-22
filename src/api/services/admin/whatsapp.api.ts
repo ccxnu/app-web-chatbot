@@ -68,10 +68,7 @@ export const getWhatsAppStatus = async (
 /**
  * Update WhatsApp session connection status
  */
-export const updateWhatsAppStatus = async (
-  data: Record<string, unknown>,
-  processName: string = "UPDATE_WHATSAPP_STATUS"
-) => {
+export const updateWhatsAppStatus = async ( data: Record<string, unknown>, processName: string = "UPDATE_WHATSAPP_STATUS") => {
   const body = withBody(data, processName);
   const { data: response } = await axiosClient.post<IResponse>(
     WHATSAPP_UPDATE_STATUS,
