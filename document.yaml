@@ -1,0 +1,2692 @@
+components:
+  schemas:
+    AddParameterRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data: {}
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        description:
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        name:
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - name
+        - code
+        - data
+        - description
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    BulkCreateChunksRequest:
+      additionalProperties: false
+      properties:
+        contents:
+          description: Array of chunk contents (embeddings generated automatically)
+          items:
+            type: string
+          type:
+            - array
+            - "null"
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        documentId:
+          description: Document ID for all chunks
+          format: int64
+          type: integer
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - documentId
+        - contents
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    Chunk:
+      additionalProperties: false
+      properties:
+        content:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        documentId:
+          format: int64
+          type: integer
+        embedding:
+          items:
+            format: float
+            type: number
+          type: array
+        id:
+          format: int64
+          type: integer
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - documentId
+        - content
+        - createdAt
+        - updatedAt
+      type: object
+    ChunkStatistics:
+      additionalProperties: false
+      properties:
+        chunkId:
+          format: int64
+          type: integer
+        createdAt:
+          format: date-time
+          type: string
+        curriculumCoveragePct:
+          format: double
+          type:
+            - number
+            - "null"
+        f1AtK:
+          format: double
+          type:
+            - number
+            - "null"
+        id:
+          format: int64
+          type: integer
+        lastRefreshAt:
+          format: date-time
+          type:
+            - string
+            - "null"
+        lastUsedAt:
+          format: date-time
+          type:
+            - string
+            - "null"
+        map:
+          format: double
+          type:
+            - number
+            - "null"
+        mrr:
+          format: double
+          type:
+            - number
+            - "null"
+        ndcg:
+          format: double
+          type:
+            - number
+            - "null"
+        precisionAtK:
+          format: double
+          type:
+            - number
+            - "null"
+        recallAtK:
+          format: double
+          type:
+            - number
+            - "null"
+        stalenessDays:
+          format: int64
+          type:
+            - integer
+            - "null"
+        updatedAt:
+          format: date-time
+          type: string
+        usageCount:
+          format: int64
+          type: integer
+      required:
+        - id
+        - chunkId
+        - usageCount
+        - lastUsedAt
+        - precisionAtK
+        - recallAtK
+        - f1AtK
+        - mrr
+        - map
+        - ndcg
+        - stalenessDays
+        - lastRefreshAt
+        - curriculumCoveragePct
+        - createdAt
+        - updatedAt
+      type: object
+    ChunkWithHybridSimilarity:
+      additionalProperties: false
+      properties:
+        combinedScore:
+          format: double
+          type: number
+        content:
+          type: string
+        docCategory:
+          type: string
+        docTitle:
+          type: string
+        documentId:
+          format: int64
+          type: integer
+        id:
+          format: int64
+          type: integer
+        keywordScore:
+          format: double
+          type: number
+        similarityScore:
+          format: double
+          type: number
+      required:
+        - id
+        - documentId
+        - content
+        - similarityScore
+        - keywordScore
+        - combinedScore
+        - docTitle
+        - docCategory
+      type: object
+    ChunkWithSimilarity:
+      additionalProperties: false
+      properties:
+        content:
+          type: string
+        docCategory:
+          type: string
+        docTitle:
+          type: string
+        documentId:
+          format: int64
+          type: integer
+        id:
+          format: int64
+          type: integer
+        similarityScore:
+          format: double
+          type: number
+      required:
+        - id
+        - documentId
+        - content
+        - similarityScore
+        - docTitle
+        - docCategory
+      type: object
+    ConversationMessage:
+      additionalProperties: false
+      properties:
+        body:
+          type: string
+        completionTimeMs:
+          format: int64
+          type: integer
+        completionTokens:
+          format: int64
+          type: integer
+        conversationId:
+          format: int64
+          type: integer
+        createdAt:
+          format: date-time
+          type: string
+        fromMe:
+          type: boolean
+        id:
+          format: int64
+          type: integer
+        isForwarded:
+          type: boolean
+        mediaUrl:
+          type: string
+        messageId:
+          type: string
+        messageType:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type: object
+        promptTimeMs:
+          format: int64
+          type: integer
+        promptTokens:
+          format: int64
+          type: integer
+        queueTimeMs:
+          format: int64
+          type: integer
+        quotedMessage:
+          type: string
+        senderName:
+          type: string
+        timestamp:
+          format: int64
+          type: integer
+        totalTimeMs:
+          format: int64
+          type: integer
+        totalTokens:
+          format: int64
+          type: integer
+      required:
+        - id
+        - conversationId
+        - messageId
+        - fromMe
+        - messageType
+        - timestamp
+        - isForwarded
+        - createdAt
+      type: object
+    CreateChunkRequest:
+      additionalProperties: false
+      properties:
+        content:
+          description: Chunk text content (embedding generated automatically)
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        documentId:
+          description: Document ID this chunk belongs to
+          format: int64
+          type: integer
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - documentId
+        - content
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    CreateDocumentRequest:
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+        publishedAt:
+          type:
+            - string
+            - "null"
+        source:
+          type:
+            - string
+            - "null"
+        summary:
+          type:
+            - string
+            - "null"
+        title:
+          type: string
+      required:
+        - category
+        - title
+        - summary
+        - source
+        - publishedAt
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    DelParameterRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - code
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    DeleteChunkRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          description: Chunk ID to delete
+          format: int64
+          type: integer
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - chunkId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    DeleteDocumentRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        docId:
+          format: int64
+          type: integer
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - docId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    Document:
+      additionalProperties: false
+      properties:
+        active:
+          type: boolean
+        category:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          format: int64
+          type: integer
+        publishedAt:
+          format: date-time
+          type:
+            - string
+            - "null"
+        source:
+          type:
+            - string
+            - "null"
+        summary:
+          type:
+            - string
+            - "null"
+        title:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - category
+        - title
+        - summary
+        - source
+        - publishedAt
+        - active
+        - createdAt
+        - updatedAt
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+      type: object
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          examples:
+            - Property foo is required but is missing.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          type:
+            - array
+            - "null"
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          examples:
+            - https://example.com/error-log/abc123
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          examples:
+            - 400
+          format: int64
+          type: integer
+        title:
+          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+          examples:
+            - Bad Request
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          examples:
+            - https://example.com/errors/example
+          format: uri
+          type: string
+      type: object
+    GetAllDocumentsRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        limit:
+          format: int64
+          type: integer
+        offset:
+          format: int64
+          type: integer
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - limit
+        - offset
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetAllParametersRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetChunkByIDRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          description: Chunk ID to retrieve
+          format: int64
+          type: integer
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - chunkId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetChunkStatisticsRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          format: int64
+          type: integer
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - chunkId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetChunksByDocumentRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        docId:
+          description: Document ID to retrieve chunks from
+          format: int64
+          type: integer
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - docId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetConversationHistoryRequest:
+      additionalProperties: false
+      properties:
+        chatId:
+          description: WhatsApp chat ID to retrieve history for
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        limit:
+          description: "Maximum number of messages to retrieve (default: 50)"
+          format: int64
+          type: integer
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - chatId
+        - limit
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetDocumentByIDRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        docId:
+          format: int64
+          type: integer
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - docId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetDocumentsByCategoryRequest:
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        limit:
+          format: int64
+          type: integer
+        offset:
+          format: int64
+          type: integer
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - category
+        - limit
+        - offset
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetParameterByCodeRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - code
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetTopChunksByUsageRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        limit:
+          format: int64
+          type: integer
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - limit
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetWhatsAppQRCodeRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+        sessionName:
+          description: WhatsApp session name to get QR code for
+          type: string
+      required:
+        - sessionName
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    GetWhatsAppStatusRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+        sessionName:
+          description: WhatsApp session name to check status for
+          type: string
+      required:
+        - sessionName
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    HybridSearchRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        keywordWeight:
+          description: "Weight for keyword/FTS score 0-1 (default: 0.15)"
+          format: double
+          type: number
+        limit:
+          description: "Maximum number of results (default: 10)"
+          format: int64
+          type: integer
+        minSimilarity:
+          description: "Minimum similarity score 0-1 (default: 0.2)"
+          format: double
+          type: number
+        process:
+          description: Process name initiating the request
+          type: string
+        queryText:
+          description: Text query for hybrid search (converted to embedding + full-text search)
+          type: string
+      required:
+        - queryText
+        - limit
+        - minSimilarity
+        - keywordWeight
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    IncrementChunkUsageRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          format: int64
+          type: integer
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - chunkId
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    Parameter:
+      additionalProperties: false
+      properties:
+        active:
+          type: boolean
+        code:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        data: {}
+        description:
+          type: string
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - name
+        - code
+        - data
+        - description
+        - active
+        - createdAt
+        - updatedAt
+      type: object
+    ReloadCacheRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    ResultChunk:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          $ref: "#/components/schemas/Chunk"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultChunkStatistics:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          $ref: "#/components/schemas/ChunkStatistics"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultData:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          additionalProperties: {}
+          type: object
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultDocument:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          $ref: "#/components/schemas/Document"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListChunk:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/Chunk"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListChunkWithHybridSimilarity:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/ChunkWithHybridSimilarity"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListChunkWithSimilarity:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/ChunkWithSimilarity"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListConversationMessage:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/ConversationMessage"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListDocument:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/Document"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListParameter:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/Parameter"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultListTopChunkByUsage:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          items:
+            $ref: "#/components/schemas/TopChunkByUsage"
+          type:
+            - array
+            - "null"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultParameter:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          $ref: "#/components/schemas/Parameter"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    ResultWhatsAppSession:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data:
+          $ref: "#/components/schemas/WhatsAppSession"
+        info:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - code
+        - info
+        - data
+      type: object
+    SearchDocumentsByTitleRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        limit:
+          format: int64
+          type: integer
+        process:
+          description: Process name initiating the request
+          type: string
+        titlePattern:
+          type: string
+      required:
+        - titlePattern
+        - limit
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    SimilaritySearchRequest:
+      additionalProperties: false
+      properties:
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        limit:
+          description: "Maximum number of results (default: 10)"
+          format: int64
+          type: integer
+        minSimilarity:
+          description: "Minimum similarity score 0-1 (default: 0.7)"
+          format: double
+          type: number
+        process:
+          description: Process name initiating the request
+          type: string
+        queryText:
+          description: Text query (automatically converted to embedding)
+          type: string
+      required:
+        - queryText
+        - limit
+        - minSimilarity
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    TopChunkByUsage:
+      additionalProperties: false
+      properties:
+        chunkId:
+          format: int64
+          type: integer
+        content:
+          type: string
+        docTitle:
+          type: string
+        f1Score:
+          format: double
+          type:
+            - number
+            - "null"
+        lastUsedAt:
+          format: date-time
+          type:
+            - string
+            - "null"
+        usageCount:
+          format: int64
+          type: integer
+      required:
+        - chunkId
+        - content
+        - docTitle
+        - usageCount
+        - lastUsedAt
+        - f1Score
+      type: object
+    UpdParameterRequest:
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+        data: {}
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        description:
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        name:
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - code
+        - name
+        - data
+        - description
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    UpdateChunkContentRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          description: Chunk ID to update
+          format: int64
+          type: integer
+        content:
+          description: New content (embedding regenerated automatically)
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+      required:
+        - chunkId
+        - content
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    UpdateChunkQualityMetricsRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          format: int64
+          type: integer
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        f1AtK:
+          format: double
+          type:
+            - number
+            - "null"
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        map:
+          format: double
+          type:
+            - number
+            - "null"
+        mrr:
+          format: double
+          type:
+            - number
+            - "null"
+        ndcg:
+          format: double
+          type:
+            - number
+            - "null"
+        precisionAtK:
+          format: double
+          type:
+            - number
+            - "null"
+        process:
+          description: Process name initiating the request
+          type: string
+        recallAtK:
+          format: double
+          type:
+            - number
+            - "null"
+      required:
+        - chunkId
+        - precisionAtK
+        - recallAtK
+        - f1AtK
+        - mrr
+        - map
+        - ndcg
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    UpdateChunkStalenessRequest:
+      additionalProperties: false
+      properties:
+        chunkId:
+          format: int64
+          type: integer
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+        stalenessDays:
+          format: int64
+          type: integer
+      required:
+        - chunkId
+        - stalenessDays
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    UpdateDocumentRequest:
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        docId:
+          format: int64
+          type: integer
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        process:
+          description: Process name initiating the request
+          type: string
+        publishedAt:
+          type:
+            - string
+            - "null"
+        source:
+          type:
+            - string
+            - "null"
+        summary:
+          type:
+            - string
+            - "null"
+        title:
+          type: string
+      required:
+        - docId
+        - category
+        - title
+        - summary
+        - source
+        - publishedAt
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    UpdateWhatsAppStatusRequest:
+      additionalProperties: false
+      properties:
+        connected:
+          description: Connection status
+          type:
+            - boolean
+            - "null"
+        dateProcess:
+          description: Timestamp when request was initiated
+          format: date-time
+          type: string
+        deviceAddress:
+          description: Device IP address
+          type: string
+        deviceName:
+          description: Device name
+          type:
+            - string
+            - "null"
+        idDevice:
+          description: Device identifier
+          type: string
+        idRequest:
+          description: Unique request ID (UUID v4)
+          type: string
+        idSession:
+          description: Session identifier
+          type: string
+        phoneNumber:
+          description: Phone number connected to session
+          type:
+            - string
+            - "null"
+        platform:
+          description: Platform (android/ios/web)
+          type:
+            - string
+            - "null"
+        process:
+          description: Process name initiating the request
+          type: string
+        sessionName:
+          description: WhatsApp session name
+          type: string
+      required:
+        - sessionName
+        - phoneNumber
+        - deviceName
+        - platform
+        - connected
+        - idSession
+        - idRequest
+        - process
+        - idDevice
+        - deviceAddress
+        - dateProcess
+      type: object
+    WhatsAppSession:
+      additionalProperties: false
+      properties:
+        active:
+          type: boolean
+        connected:
+          type: boolean
+        createdAt:
+          format: date-time
+          type: string
+        deviceName:
+          type: string
+        id:
+          format: int64
+          type: integer
+        lastSeen:
+          format: date-time
+          type: string
+        phoneNumber:
+          type: string
+        platform:
+          type: string
+        qrCode:
+          type: string
+        sessionData:
+          additionalProperties: {}
+          type: object
+        sessionName:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - sessionName
+        - phoneNumber
+        - deviceName
+        - platform
+        - connected
+        - sessionData
+        - active
+        - createdAt
+        - updatedAt
+      type: object
+  securitySchemes:
+    AppAuth:
+      description: Custom authorization token
+      in: header
+      name: X-App-Authorization
+      type: apiKey
+info:
+  contact:
+    name: ISTS Development Team
+  description: RAG-based chatbot API for institute knowledge management
+  title: ISTS Chatbot API
+  version: 1.0.0
+openapi: 3.1.0
+paths:
+  /admin/whatsapp/conversation-history:
+    post:
+      description: Retrieves message history for a specific WhatsApp conversation
+      operationId: get-conversation-history
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetConversationHistoryRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListConversationMessage"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get conversation message history
+      tags:
+        - Admin
+        - WhatsApp
+        - Conversations
+  /admin/whatsapp/qr-code:
+    post:
+      description: Retrieves the QR code for WhatsApp authentication. Admin scans this to connect the bot.
+      operationId: get-whatsapp-qr-code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetWhatsAppQRCodeRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get WhatsApp QR code
+      tags:
+        - Admin
+        - WhatsApp
+  /admin/whatsapp/status:
+    post:
+      description: Retrieves the current WhatsApp session status including connection state and device info
+      operationId: get-whatsapp-status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetWhatsAppStatusRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultWhatsAppSession"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get WhatsApp connection status
+      tags:
+        - Admin
+        - WhatsApp
+  /admin/whatsapp/update-status:
+    post:
+      description: Updates WhatsApp session connection status (internal use)
+      operationId: update-whatsapp-status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWhatsAppStatusRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update WhatsApp connection status
+      tags:
+        - Admin
+        - WhatsApp
+  /api/v1/chunk-statistics/get-by-chunk:
+    post:
+      description: Retrieves all statistics and quality metrics for a specific chunk
+      operationId: get-chunk-statistics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetChunkStatisticsRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultChunkStatistics"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get chunk statistics
+      tags:
+        - Chunk Statistics
+        - Analytics
+  /api/v1/chunk-statistics/get-top-by-usage:
+    post:
+      description: Retrieves the most frequently used chunks for analytics. Useful for identifying popular knowledge.
+      operationId: get-top-chunks-by-usage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetTopChunksByUsageRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListTopChunkByUsage"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get most used chunks
+      tags:
+        - Chunk Statistics
+        - Analytics
+  /api/v1/chunk-statistics/increment-usage:
+    post:
+      description: Increments the usage count and updates last used timestamp for a chunk. Call this when a chunk is used in RAG responses.
+      operationId: increment-chunk-usage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IncrementChunkUsageRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Increment chunk usage counter
+      tags:
+        - Chunk Statistics
+  /api/v1/chunk-statistics/update-quality-metrics:
+    post:
+      description: Updates quality and relevance metrics for a chunk. Metrics include Precision@K, Recall@K, F1, MRR, MAP, and NDCG. Only provided metrics are updated.
+      operationId: update-chunk-quality-metrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChunkQualityMetricsRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update RAG quality metrics
+      tags:
+        - Chunk Statistics
+        - RAG
+  /api/v1/chunk-statistics/update-staleness:
+    post:
+      description: Updates the staleness metric for a chunk to track content freshness. Higher values indicate older content.
+      operationId: update-chunk-staleness
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChunkStalenessRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update chunk staleness tracking
+      tags:
+        - Chunk Statistics
+  /api/v1/chunks/bulk-create:
+    post:
+      description: Creates multiple chunks from text contents (embeddings generated automatically). Efficient for document ingestion.
+      operationId: bulk-create-chunks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkCreateChunksRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Bulk create chunks
+      tags:
+        - Chunks
+  /api/v1/chunks/create:
+    post:
+      description: Creates a new chunk from text content (embedding generated automatically). Initializes statistics record.
+      operationId: create-chunk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChunkRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Create chunk
+      tags:
+        - Chunks
+  /api/v1/chunks/delete:
+    post:
+      description: Hard deletes a chunk (cascades to statistics)
+      operationId: delete-chunk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteChunkRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Delete chunk
+      tags:
+        - Chunks
+  /api/v1/chunks/get-by-document:
+    post:
+      description: Retrieves all chunks for a specific document
+      operationId: get-chunks-by-document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetChunksByDocumentRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListChunk"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get chunks by document
+      tags:
+        - Chunks
+  /api/v1/chunks/get-by-id:
+    post:
+      description: Retrieves a specific chunk by its ID including embedding
+      operationId: get-chunk-by-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetChunkByIDRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultChunk"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get chunk by ID
+      tags:
+        - Chunks
+  /api/v1/chunks/hybrid-search:
+    post:
+      description: Performs hybrid search combining semantic similarity (embeddings) and keyword matching (full-text search). Returns top K chunks ordered by combined score.
+      operationId: hybrid-search-chunks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HybridSearchRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListChunkWithHybridSimilarity"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Hybrid search (vector + full-text)
+      tags:
+        - Chunks
+        - RAG
+  /api/v1/chunks/similarity-search:
+    post:
+      description: Performs semantic search using text query (automatically converted to embedding). Returns top K most similar chunks ordered by cosine similarity.
+      operationId: similarity-search-chunks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimilaritySearchRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListChunkWithSimilarity"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Vector similarity search
+      tags:
+        - Chunks
+        - RAG
+  /api/v1/chunks/update-content:
+    post:
+      description: Updates the content and regenerates the embedding vector automatically
+      operationId: update-chunk-content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChunkContentRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update chunk content
+      tags:
+        - Chunks
+  /api/v1/documents/create:
+    post:
+      description: Creates a new document in the knowledge base
+      operationId: create-document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDocumentRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Create document
+      tags:
+        - Documents
+  /api/v1/documents/delete:
+    post:
+      description: Soft deletes a document (sets active = false)
+      operationId: delete-document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteDocumentRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Delete document
+      tags:
+        - Documents
+  /api/v1/documents/get-all:
+    post:
+      description: Retrieves all active documents with pagination
+      operationId: get-all-documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetAllDocumentsRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListDocument"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all documents
+      tags:
+        - Documents
+  /api/v1/documents/get-by-category:
+    post:
+      description: Retrieves documents filtered by category with pagination
+      operationId: get-documents-by-category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetDocumentsByCategoryRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListDocument"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get documents by category
+      tags:
+        - Documents
+  /api/v1/documents/get-by-id:
+    post:
+      description: Retrieves a specific document by its ID
+      operationId: get-document-by-id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetDocumentByIDRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultDocument"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get document by ID
+      tags:
+        - Documents
+  /api/v1/documents/search-by-title:
+    post:
+      description: Searches documents by title pattern (case-insensitive)
+      operationId: search-documents-by-title
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchDocumentsByTitleRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListDocument"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Search documents by title
+      tags:
+        - Documents
+  /api/v1/documents/update:
+    post:
+      description: Updates an existing document
+      operationId: update-document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDocumentRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update document
+      tags:
+        - Documents
+  /api/v1/parameters/add:
+    post:
+      description: Creates a new system parameter with validation
+      operationId: add-parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddParameterRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Add parameter
+      tags:
+        - Parameters
+  /api/v1/parameters/delete:
+    post:
+      description: Soft deletes a parameter (sets active = false)
+      operationId: delete-parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DelParameterRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Delete parameter
+      tags:
+        - Parameters
+  /api/v1/parameters/get-all:
+    post:
+      description: Retrieves all active system parameters from cache or database
+      operationId: get-all-parameters
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetAllParametersRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultListParameter"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get all parameters
+      tags:
+        - Parameters
+  /api/v1/parameters/get-by-code:
+    post:
+      description: Retrieves a specific parameter by its unique code
+      operationId: get-parameter-by-code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetParameterByCodeRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultParameter"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Get parameter by code
+      tags:
+        - Parameters
+  /api/v1/parameters/reload-cache:
+    post:
+      description: Reloads parameter cache from database
+      operationId: reload-parameter-cache
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReloadCacheRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Reload parameter cache
+      tags:
+        - Parameters
+  /api/v1/parameters/update:
+    post:
+      description: Updates an existing parameter
+      operationId: update-parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdParameterRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      summary: Update parameter
+      tags:
+        - Parameters
+security:
+  - AppAuth: []
+servers:
+  - description: Development server
+    url: http://localhost:8080

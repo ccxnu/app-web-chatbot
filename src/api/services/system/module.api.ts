@@ -12,29 +12,25 @@ export const moduleKeys = {
     byId: (id: string) => ["modules", id] as const,
 };
 
-export const getModules = async (): Promise<IModule[]> =>
-{
-  const body = withBody({}, "GET_MODULES");
-  const { data } = await axiosClient.post<IResponse<IModule[]>>("/module/get_modules", body);
-  return validateApiResponse<IModule[]>(data);
+export const getModules = async (): Promise<IModule[]> => {
+    const body = withBody({}, "GET_MODULES");
+    const { data } = await axiosClient.post<IResponse<IModule[]>>("/module/get_modules", body);
+    return validateApiResponse<IModule[]>(data);
 };
 
-export const addModule = async (mod: Omit<IModule, "id">) =>
-{
+export const addModule = async (mod: Omit<IModule, "id">) => {
     const body = withBody(mod, "ADD_MODULE");
     const { data } = await axiosClient.post<IResponse>("/module/add_module", body);
     return validateApiResponse(data);
 }
 
-export const updateModule = async (mod: IModule): Promise<IResponse> =>
-{
+export const updateModule = async (mod: IModule): Promise<IResponse> => {
     const body = withBody(mod, "UPD_MODULES");
     const { data } = await axiosClient.post<IResponse>(`/module/upd_module`, body);
     return validateApiResponse(data);
 };
 
-export const deleteModule = async (mod: Pick<IModule, "id">): Promise<IResponse> =>
-{
+export const deleteModule = async (mod: Pick<IModule, "id">): Promise<IResponse> => {
     const body = withBody({ idModule: mod.id }, "DEL_MODULE");
     const { data } = await axiosClient.post<IResponse>(`/module/del_module`, body);
     return validateApiResponse(data);

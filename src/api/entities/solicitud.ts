@@ -1,11 +1,9 @@
-export interface ISolicitud
+export interface IBase
 {
   idSession: string;
   idRequest: string;
-  process: string;
   dateProcess: string;
-  ipDevice: string;
-  ipPublic: string;
-  sender: string;
-  idLogin: string;
+  process: string;
+  idDevice: string;
+  deviceAddress: string;
 }
