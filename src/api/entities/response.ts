@@ -1,7 +1,7 @@
 export interface IResponse<T = any>
 {
+    success: boolean;
     code: string;
-    result: T;
     info: string;
-    idTransaction: string;
+    data: T;
 }

@@ -12,7 +12,7 @@ import { useModules } from './queries'
 
 export default function Modules() {
   // Usa React Query
-  const { data = [], isLoading } = useModules()
+  // const { data = [], isLoading } = useModules()
 
   return (
     <ModulesProvider>
@@ -35,7 +35,7 @@ export default function Modules() {
           <ModulesPrimaryButtons />
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-y-0 lg:space-x-12'>
-          <ModulesTable data={data} columns={columns} loading={isLoading} />
+          <ModulesTable data={[]} columns={columns} loading={true} />
         </div>
       </Main>
 
