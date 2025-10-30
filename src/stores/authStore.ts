@@ -1,10 +1,7 @@
 import Cookies from 'js-cookie'
 import { create } from 'zustand'
 import type { AdminUserInfo } from '@/api/frontend-types/admin.types'
-
-const ACCESS_TOKEN = 'thisisjustarandomstring'
-const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN_KEY'
-const ADMIN_USER_KEY = 'ADMIN_USER_INFO'
+import { STORAGE_KEYS } from '@/api/http/types'
 
 interface AuthUser {
   accountNo: string
@@ -32,13 +29,13 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>()((set) => {
-  const cookieState = Cookies.get(ACCESS_TOKEN)
+  const cookieState = Cookies.get(STORAGE_KEYS.ACCESS_TOKEN)
   const initToken = cookieState ? JSON.parse(cookieState) : ''
 
   // Initialize admin user from localStorage
-  const savedAdminUser = localStorage.getItem(ADMIN_USER_KEY)
+  const savedAdminUser = localStorage.getItem(STORAGE_KEYS.ADMIN_USER_INFO)
   const initAdminUser = savedAdminUser ? JSON.parse(savedAdminUser) : null
-  const initRefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY)
+  const initRefreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN)
 
   return {
     auth: {
@@ -48,17 +45,17 @@ export const useAuthStore = create<AuthState>()((set) => {
       accessToken: initToken,
       setAccessToken: (accessToken) =>
         set((state) => {
-          Cookies.set(ACCESS_TOKEN, JSON.stringify(accessToken))
+          Cookies.set(STORAGE_KEYS.ACCESS_TOKEN, JSON.stringify(accessToken))
           return { ...state, auth: { ...state.auth, accessToken } }
         }),
       resetAccessToken: () =>
         set((state) => {
-          Cookies.remove(ACCESS_TOKEN)
+          Cookies.remove(STORAGE_KEYS.ACCESS_TOKEN)
           return { ...state, auth: { ...state.auth, accessToken: '' } }
         }),
       reset: () =>
         set((state) => {
-          Cookies.remove(ACCESS_TOKEN)
+          Cookies.remove(STORAGE_KEYS.ACCESS_TOKEN)
           return {
             ...state,
             auth: { ...state.auth, user: null, accessToken: '' },
@@ -71,20 +68,20 @@ export const useAuthStore = create<AuthState>()((set) => {
       setUser: (user) =>
         set((state) => {
           if (user) {
-            localStorage.setItem(ADMIN_USER_KEY, JSON.stringify(user))
+            localStorage.setItem(STORAGE_KEYS.ADMIN_USER_INFO, JSON.stringify(user))
           } else {
-            localStorage.removeItem(ADMIN_USER_KEY)
+            localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO)
           }
           return { ...state, adminAuth: { ...state.adminAuth, user } }
         }),
       setTokens: (accessToken, refreshToken) =>
         set((state) => {
           // Store tokens in localStorage
-          localStorage.setItem('ACCESS_TOKEN_KEY', accessToken)
-          localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+          localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken)
+          localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken)
 
           // Also update the old auth accessToken for compatibility
-          Cookies.set(ACCESS_TOKEN, JSON.stringify(accessToken))
+          Cookies.set(STORAGE_KEYS.ACCESS_TOKEN, JSON.stringify(accessToken))
 
           return {
             ...state,
@@ -94,10 +91,10 @@ export const useAuthStore = create<AuthState>()((set) => {
         }),
       clearAuth: () =>
         set((state) => {
-          localStorage.removeItem('ACCESS_TOKEN_KEY')
-          localStorage.removeItem(REFRESH_TOKEN_KEY)
-          localStorage.removeItem(ADMIN_USER_KEY)
-          Cookies.remove(ACCESS_TOKEN)
+          localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
+          localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
+          localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO)
+          Cookies.remove(STORAGE_KEYS.ACCESS_TOKEN)
 
           return {
             ...state,

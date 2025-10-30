@@ -63,7 +63,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
           <TableRow>
             <TableHead>Título</TableHead>
             <TableHead>Categoría</TableHead>
-            <TableHead>Descripción</TableHead>
+            <TableHead>Resumen</TableHead>
             <TableHead>Creado</TableHead>
             <TableHead className="text-center">Chunks</TableHead>
             <TableHead className="text-right">Acciones</TableHead>
@@ -71,13 +71,17 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
         </TableHeader>
         <TableBody>
           {documents.map((document) => (
-            <TableRow key={document.id}>
+            <TableRow
+              key={document.id}
+              className="cursor-pointer hover:bg-muted/50"
+              onClick={() => onView(document)}
+            >
               <TableCell className="font-medium">{document.title}</TableCell>
               <TableCell>
                 <Badge variant="outline">{document.category}</Badge>
               </TableCell>
               <TableCell className="max-w-md truncate text-sm text-muted-foreground">
-                {document.description}
+                {document.summary}
               </TableCell>
               <TableCell className="text-sm text-muted-foreground">
                 {formatDistanceToNow(new Date(document.createdAt), {
@@ -89,14 +93,17 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onViewChunks(document)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onViewChunks(document)
+                  }}
                   disabled={isLoading || deletingId === document.id}
                 >
                   <FileText className="mr-2 h-4 w-4" />
                   Ver Fragmentos
                 </Button>
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button

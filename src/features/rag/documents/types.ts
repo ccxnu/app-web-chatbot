@@ -6,7 +6,9 @@ export interface Document {
   id: number;
   title: string;
   category: string;
-  description: string;
+  summary: string;
+  source?: string;
+  publishedAt?: string;
   content?: string;
   createdAt: string;
   updatedAt: string;
@@ -25,7 +27,8 @@ export interface Chunk {
 export interface CreateDocumentRequest {
   title: string;
   category: string;
-  description: string;
+  summary: string;
+  source?: string;
   content?: string;
 }
 

@@ -47,6 +47,7 @@ export interface TokenPairResponse {
   tokenType: string;        // Usually "Bearer"
   expiresIn: number;        // Seconds until expiration
   expiresAt: string;        // ISO 8601 timestamp
+  idSession: string;        // uuid
   user: AdminUserInfo | null;
 }
 

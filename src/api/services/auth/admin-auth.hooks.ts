@@ -13,6 +13,7 @@ import {
 } from "./admin-auth.api";
 import type { CreateAdminRequest } from "@/api/frontend-types/requests.types";
 import type { IBase } from "@/api/entities/solicitud";
+import { STORAGE_KEYS } from "@/api/http/types";
 
 /**
  * Hook for admin login
@@ -25,12 +26,13 @@ export const useAdminLogin = () => {
       adminLogin(username, password),
     onSuccess: (data) => {
       // Store tokens
-      localStorage.setItem("ACCESS_TOKEN_KEY", data.accessToken);
-      localStorage.setItem("REFRESH_TOKEN_KEY", data.refreshToken);
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
+      localStorage.setItem(STORAGE_KEYS.ID_SESSION, data.idSession);
 
       // Store user info
       if (data.user) {
-        localStorage.setItem("ADMIN_USER_INFO", JSON.stringify(data.user));
+        localStorage.setItem(STORAGE_KEYS.ADMIN_USER_INFO, JSON.stringify(data.user));
       }
 
       // Invalidate auth queries
@@ -54,12 +56,12 @@ export const useAdminRefreshToken = () => {
     mutationFn: (refreshToken: string) => adminRefreshToken(refreshToken),
     onSuccess: (data) => {
       // Update tokens
-      localStorage.setItem("ACCESS_TOKEN_KEY", data.accessToken);
-      localStorage.setItem("REFRESH_TOKEN_KEY", data.refreshToken);
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
 
       // Update user info if provided
       if (data.user) {
-        localStorage.setItem("ADMIN_USER_INFO", JSON.stringify(data.user));
+        localStorage.setItem(STORAGE_KEYS.ADMIN_USER_INFO, JSON.stringify(data.user));
       }
 
       // Invalidate auth queries
@@ -67,9 +69,10 @@ export const useAdminRefreshToken = () => {
     },
     onError: (error: any) => {
       // Clear tokens on refresh failure
-      localStorage.removeItem("ACCESS_TOKEN_KEY");
-      localStorage.removeItem("REFRESH_TOKEN_KEY");
-      localStorage.removeItem("ADMIN_USER_INFO");
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.ID_SESSION);
+      localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
 
       toast.error(error?.info || error?.message || "Sesión expirada");
     },
@@ -84,7 +87,7 @@ export const useAdminLogout = () => {
 
   return useMutation({
     mutationFn: () => {
-      const refreshToken = localStorage.getItem("REFRESH_TOKEN_KEY");
+      const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
       if (!refreshToken) {
         throw new Error("No refresh token found");
       }
@@ -92,10 +95,10 @@ export const useAdminLogout = () => {
     },
     onSuccess: () => {
       // Clear all tokens and user info
-      localStorage.removeItem("ACCESS_TOKEN_KEY");
-      localStorage.removeItem("REFRESH_TOKEN_KEY");
-      localStorage.removeItem("ADMIN_USER_INFO");
-
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.ID_SESSION);
+      localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
       // Clear all queries
       queryClient.clear();
 
@@ -103,9 +106,10 @@ export const useAdminLogout = () => {
     },
     onError: (error: any) => {
       // Clear tokens even on error
-      localStorage.removeItem("ACCESS_TOKEN_KEY");
-      localStorage.removeItem("REFRESH_TOKEN_KEY");
-      localStorage.removeItem("ADMIN_USER_INFO");
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.ID_SESSION);
+      localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
 
       toast.error(error?.info || error?.message || "Error al cerrar sesión");
     },

@@ -403,7 +403,11 @@ function RouteComponent() {
                 </TableRow>
               ) : (
                 filteredParameters?.map((parameter) => (
-                  <TableRow key={parameter.id}>
+                  <TableRow
+                    key={parameter.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => handleEdit(parameter)}
+                  >
                     <TableCell className="font-medium">{parameter.name}</TableCell>
                     <TableCell>
                       <code className="bg-muted px-2 py-1 rounded text-xs">
@@ -436,14 +440,20 @@ function RouteComponent() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleEdit(parameter)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleEdit(parameter)
+                          }}
                         >
                           <Pencil1Icon />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => handleDelete(parameter)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDelete(parameter)
+                          }}
                         >
                           <TrashIcon className="text-destructive" />
                         </Button>

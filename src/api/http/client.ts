@@ -10,7 +10,7 @@ export const axiosClient: AxiosInstance = (() => {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        timeout: 5000, // 5 seconds
+        timeout: 10000, // 5 seconds
         withCredentials: false,
     });
 })();
@@ -84,15 +84,15 @@ axiosClient.interceptors.response.use(
             originalRequest._retry = true;
             isRefreshing = true;
 
-            const refreshTokenValue = localStorage.getItem('REFRESH_TOKEN_KEY');
+            const refreshTokenValue = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
 
             if (!refreshTokenValue) {
                 processQueue(error, null);
                 isRefreshing = false;
                 // Clear auth and redirect to login
                 localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-                localStorage.removeItem('REFRESH_TOKEN_KEY');
-                localStorage.removeItem('ADMIN_USER_INFO');
+                localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+                localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
                 return Promise.reject(error);
             }
 
@@ -101,10 +101,11 @@ axiosClient.interceptors.response.use(
 
                 // Update tokens
                 localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
-                localStorage.setItem('REFRESH_TOKEN_KEY', data.refreshToken);
+                localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
+                localStorage.setItem(STORAGE_KEYS.ID_SESSION, data.idSession);
 
                 if (data.user) {
-                    localStorage.setItem('ADMIN_USER_INFO', JSON.stringify(data.user));
+                    localStorage.setItem(STORAGE_KEYS.ADMIN_USER_INFO, JSON.stringify(data.user));
                 }
 
                 // Update axios default headers
@@ -127,8 +128,8 @@ axiosClient.interceptors.response.use(
 
                 // Clear tokens and redirect to login
                 localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-                localStorage.removeItem('REFRESH_TOKEN_KEY');
-                localStorage.removeItem('ADMIN_USER_INFO');
+                localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+                localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
 
                 return Promise.reject(refreshError);
             }

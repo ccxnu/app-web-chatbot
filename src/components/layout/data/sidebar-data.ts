@@ -11,18 +11,18 @@ import {
   IconUsers,
 } from '@tabler/icons-react'
 import { type SidebarData } from '../types'
-import { Command } from '@/components/ui/command'
+import { GraduationCap } from 'lucide-react'
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
+    name: '',
+    email: '',
+    avatar: '',
   },
   teams: [
 	{
 	  name: 'Chatbot Institucional',
-	  logo: Command,
+	  logo: GraduationCap,
 	  plan: 'ISTS',
 	}
   ],

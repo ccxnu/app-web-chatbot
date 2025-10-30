@@ -171,7 +171,7 @@ export const DocumentsManager: React.FC = () => {
                   <div className="space-y-2">
                     <h3 className="font-semibold">{chunksDocument.title}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {chunksDocument.description}
+                      {chunksDocument.summary}
                     </p>
                   </div>
                 </CardContent>

@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -23,16 +23,16 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   onClose,
 }) => {
   return (
-    <Sheet open={!!document} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent className="sm:max-w-2xl">
-        <SheetHeader>
-          <SheetTitle>{document.title}</SheetTitle>
-          <SheetDescription>
+    <Dialog open={!!document} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-8xl max-h-[90vh]">
+        <DialogHeader>
+          <DialogTitle>{document.title}</DialogTitle>
+          <DialogDescription>
             Detalles completos del documento
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
-        <ScrollArea className="h-full py-6 pr-4">
+        <ScrollArea className="max-h-[calc(90vh-8rem)] pr-4">
           <div className="space-y-6">
             {/* Categoría */}
             <div>
@@ -44,15 +44,35 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
 
             <Separator />
 
-            {/* Descripción */}
+            {/* Resumen */}
             <div>
               <h4 className="text-sm font-semibold text-muted-foreground mb-2">
-                Descripción
+                Resumen
               </h4>
-              <p className="text-sm leading-relaxed">{document.description}</p>
+              <p className="text-sm leading-relaxed">{document.summary}</p>
             </div>
 
             <Separator />
+
+            {/* Fuente */}
+            {document.source && (
+              <>
+                <div>
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
+                    Fuente
+                  </h4>
+                  <a
+                    href={document.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 hover:underline break-all"
+                  >
+                    {document.source}
+                  </a>
+                </div>
+                <Separator />
+              </>
+            )}
 
             {/* Contenido */}
             {document.content && (
@@ -107,7 +127,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
             </div>
           </div>
         </ScrollArea>
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   );
 };

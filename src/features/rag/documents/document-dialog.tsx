@@ -27,7 +27,8 @@ import type { Document, CreateDocumentRequest } from "./types";
 const documentSchema = z.object({
   title: z.string().min(3, "El título debe tener al menos 3 caracteres"),
   category: z.string().min(1, "La categoría es requerida"),
-  description: z.string().min(10, "La descripción debe tener al menos 10 caracteres"),
+  summary: z.string().min(10, "El resumen debe tener al menos 10 caracteres"),
+  source: z.string().optional(),
   content: z.string().optional(),
 });
 
@@ -53,7 +54,8 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
     defaultValues: {
       title: "",
       category: "",
-      description: "",
+      summary: "",
+      source: "",
       content: "",
     },
   });
@@ -63,14 +65,16 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
       form.reset({
         title: document.title,
         category: document.category,
-        description: document.description,
+        summary: document.summary,
+        source: document.source || "",
         content: document.content || "",
       });
     } else {
       form.reset({
         title: "",
         category: "",
-        description: "",
+        summary: "",
+        source: "",
         content: "",
       });
     }
@@ -146,16 +150,34 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
 
             <FormField
               control={form.control}
-              name="description"
+              name="summary"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descripción</FormLabel>
+                  <FormLabel>Resumen</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Descripción breve del documento"
+                      placeholder="Resumen breve del documento"
                       {...field}
                       disabled={isLoading}
                       rows={3}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="source"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fuente (Opcional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="URL o referencia de la fuente"
+                      {...field}
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />

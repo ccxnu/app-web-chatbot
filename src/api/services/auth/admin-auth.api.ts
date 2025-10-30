@@ -6,7 +6,7 @@
 import { axiosClient } from "@/api/http/client";
 import { withBody } from "@/api/http/request";
 import { validateApiResponse } from "@/api/http/response";
-import { IResponse } from "@/api/entities/response";
+import type { IResponse } from "@/api/entities/response";
 import type {
   TokenPairResponse,
   AdminUser,

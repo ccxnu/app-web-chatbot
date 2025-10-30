@@ -1,7 +1,19 @@
 import ViteLogo from '@/assets/react.svg'
 import { UserAuthForm } from './components/user-auth-form'
+import { useAuth } from '@/context/auth-context'
+import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 
 export default function SignIn() {
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate({ to: '/panel-de-control' })
+    }
+  }, [isAuthenticated, navigate]) // Dependencias: solo se ejecuta si isAuthenticated o navigate cambian
+
   return (
     <div className='relative container grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <div className='bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-r'>
