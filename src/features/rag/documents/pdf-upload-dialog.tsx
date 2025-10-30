@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -18,9 +19,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, Upload, FileText, X } from "lucide-react";
+import { getDocumentCategories, categoriesKeys } from "@/api/services";
 import type { UploadPDFDocumentRequest } from "./types";
 import { Progress } from "@/components/ui/progress";
 
@@ -54,6 +63,12 @@ export const PDFUploadDialog: React.FC<PDFUploadDialogProps> = ({
   const [fileBase64, setFileBase64] = useState<string>("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+
+  // Fetch categories
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery({
+    queryKey: categoriesKeys.all,
+    queryFn: getDocumentCategories,
+  });
 
   const form = useForm<PDFUploadFormData>({
     resolver: zodResolver(pdfUploadSchema),
@@ -267,9 +282,35 @@ export const PDFUploadDialog: React.FC<PDFUploadDialogProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoría</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ej: Tecnología, Ciencia, Negocios" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    value={field.value}
+                    disabled={categoriesLoading}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona una categoría" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categoriesLoading ? (
+                        <SelectItem value="" disabled>
+                          Cargando categorías...
+                        </SelectItem>
+                      ) : categories.length > 0 ? (
+                        categories.map((category) => (
+                          <SelectItem key={category.code} value={category.code}>
+                            {category.description}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="" disabled>
+                          No hay categorías disponibles
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

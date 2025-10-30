@@ -5,3 +5,4 @@
 export * from "./chunks.api";
 export * from "./chunk-statistics.api";
 export * from "./documents.api";
+export * from "./categories.api";
