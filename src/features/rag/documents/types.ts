@@ -36,6 +36,21 @@ export interface UpdateDocumentRequest extends CreateDocumentRequest {
   id: number;
 }
 
+export interface UploadPDFDocumentRequest {
+  title: string;
+  category: string;
+  source?: string;
+  fileBase64: string;
+  chunkSize?: number;
+  chunkOverlap?: number;
+}
+
+export interface UploadPDFDocumentResponse {
+  docId: number;
+  chunksCreated: number;
+  message: string;
+}
+
 export interface CreateChunkRequest {
   documentId: number;
   content: string;

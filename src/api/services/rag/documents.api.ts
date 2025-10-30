@@ -10,6 +10,7 @@ import {
   DOCUMENTS_GET_BY_ID,
   DOCUMENTS_SEARCH_BY_TITLE,
   DOCUMENTS_UPDATE,
+  DOCUMENTS_UPLOAD_PDF,
 } from "../constant-routes";
 
 /**
@@ -122,6 +123,21 @@ export const deleteDocument = async (
   const body = withBody(data, processName);
   const { data: response } = await axiosClient.post<IResponse>(
     DOCUMENTS_DELETE,
+    body
+  );
+  return validateApiResponse(response);
+};
+
+/**
+ * Upload a PDF file, extract text, and create document with chunks
+ */
+export const uploadPDFDocument = async (
+  data: Record<string, unknown>,
+  processName: string = "UPLOAD_PDF_DOCUMENT"
+) => {
+  const body = withBody(data, processName);
+  const { data: response } = await axiosClient.post<IResponse>(
+    DOCUMENTS_UPLOAD_PDF,
     body
   );
   return validateApiResponse(response);

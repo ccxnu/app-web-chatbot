@@ -35,6 +35,7 @@ export const DOCUMENTS_GET_BY_CATEGORY = "/api/v1/documents/get-by-category";
 export const DOCUMENTS_GET_BY_ID = "/api/v1/documents/get-by-id";
 export const DOCUMENTS_SEARCH_BY_TITLE = "/api/v1/documents/search-by-title";
 export const DOCUMENTS_UPDATE = "/api/v1/documents/update";
+export const DOCUMENTS_UPLOAD_PDF = "/api/v1/documents/upload-pdf";
 
 // Parameters Routes
 export const PARAMETERS_ADD = "/api/v1/parameters/add";

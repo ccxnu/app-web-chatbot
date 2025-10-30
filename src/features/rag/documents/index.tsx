@@ -5,21 +5,24 @@ import {
   createDocument,
   updateDocument,
   deleteDocument,
+  uploadPDFDocument,
   documentsKeys,
 } from "@/api/services";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { DocumentDialog } from "./document-dialog";
+import { PDFUploadDialog } from "./pdf-upload-dialog";
 import { DocumentsTable } from "./documents-table";
 import { ChunksManager } from "./chunks-manager";
 import { DocumentViewer } from "./document-viewer";
-import type { Document, CreateDocumentRequest } from "./types";
+import type { Document, CreateDocumentRequest, UploadPDFDocumentRequest } from "./types";
 
 export const DocumentsManager: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [pdfUploadOpen, setPdfUploadOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<Document | undefined>();
   const [viewingDocument, setViewingDocument] = useState<Document | undefined>();
   const [chunksDocument, setChunksDocument] = useState<Document | undefined>();
@@ -80,6 +83,19 @@ export const DocumentsManager: React.FC = () => {
     },
   });
 
+  // Subir PDF
+  const uploadPDFMutation = useMutation({
+    mutationFn: (data: UploadPDFDocumentRequest) => uploadPDFDocument(data),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.all });
+      toast.success(`PDF procesado: ${result.chunksCreated} fragmentos creados`);
+      setPdfUploadOpen(false);
+    },
+    onError: () => {
+      toast.error("Error al procesar el PDF");
+    },
+  });
+
   const handleEdit = (document: Document) => {
     setSelectedDocument(document);
     setDialogOpen(true);
@@ -88,6 +104,14 @@ export const DocumentsManager: React.FC = () => {
   const handleCreate = () => {
     setSelectedDocument(undefined);
     setDialogOpen(true);
+  };
+
+  const handleUploadPDF = () => {
+    setPdfUploadOpen(true);
+  };
+
+  const handlePDFUploadSubmit = async (data: UploadPDFDocumentRequest) => {
+    await uploadPDFMutation.mutateAsync(data);
   };
 
   const handleSubmit = async (data: CreateDocumentRequest) => {
@@ -118,10 +142,16 @@ export const DocumentsManager: React.FC = () => {
             Crea, edita y organiza los documentos de tu base de conocimientos
           </p>
         </div>
-        <Button onClick={handleCreate} size="lg">
-          <Plus className="mr-2 h-4 w-4" />
-          Nuevo Documento
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={handleUploadPDF} size="lg" variant="outline">
+            <Upload className="mr-2 h-4 w-4" />
+            Subir PDF
+          </Button>
+          <Button onClick={handleCreate} size="lg">
+            <Plus className="mr-2 h-4 w-4" />
+            Nuevo Documento
+          </Button>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -194,6 +224,13 @@ export const DocumentsManager: React.FC = () => {
         document={selectedDocument}
         onSubmit={handleSubmit}
         isLoading={createMutation.isPending || updateMutation.isPending}
+      />
+
+      <PDFUploadDialog
+        open={pdfUploadOpen}
+        onOpenChange={setPdfUploadOpen}
+        onSubmit={handlePDFUploadSubmit}
+        isLoading={uploadPDFMutation.isPending}
       />
 
       {viewingDocument && (
