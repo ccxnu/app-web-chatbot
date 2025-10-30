@@ -57,7 +57,7 @@ export const DocumentsManager: React.FC = () => {
   const updateMutation = useMutation({
     mutationFn: (data: CreateDocumentRequest) =>
       updateDocument({
-        id: selectedDocument!.id,
+        docId: selectedDocument!.id,
         ...data,
       }),
     onSuccess: () => {
@@ -73,7 +73,7 @@ export const DocumentsManager: React.FC = () => {
 
   // Eliminar documento
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteDocument({ id }),
+    mutationFn: (id: number) => deleteDocument({ docId: id }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: documentsKeys.all });
       toast.success("Documento eliminado exitosamente");
