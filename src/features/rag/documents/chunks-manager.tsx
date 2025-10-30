@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getChunksByDocument,
@@ -9,6 +9,7 @@ import {
 } from "@/api/services";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { ChunkDialog } from "./chunk-dialog";
@@ -19,9 +20,12 @@ interface ChunksManagerProps {
   documentId: number;
 }
 
+type FilterType = "all" | "short" | "medium" | "long";
+
 export const ChunksManager: React.FC<ChunksManagerProps> = ({ documentId }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedChunk, setSelectedChunk] = useState<Chunk | undefined>();
+  const [filter, setFilter] = useState<FilterType>("all");
   const queryClient = useQueryClient();
 
   // Obtener chunks del documento
@@ -29,13 +33,13 @@ export const ChunksManager: React.FC<ChunksManagerProps> = ({ documentId }) => {
     queryKey: chunksKeys.byDocument(documentId),
     queryFn: () =>
       getChunksByDocument({
-        documentId,
+        docId: documentId,
       }),
   });
 
   // Crear chunk
   const createMutation = useMutation({
-    mutationFn: (data: CreateChunkRequest) => createChunk(data),
+    mutationFn: (data: CreateChunkRequest) => createChunk(data as Record<string, unknown>),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: chunksKeys.byDocument(documentId),
@@ -53,8 +57,8 @@ export const ChunksManager: React.FC<ChunksManagerProps> = ({ documentId }) => {
   const updateMutation = useMutation({
     mutationFn: (data: CreateChunkRequest) =>
       updateChunkContent({
-        id: selectedChunk!.id,
-        ...data,
+        chunkId: selectedChunk!.id,
+        content: data.content,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -71,7 +75,7 @@ export const ChunksManager: React.FC<ChunksManagerProps> = ({ documentId }) => {
 
   // Eliminar chunk
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => deleteChunk({ id }),
+    mutationFn: (id: number) => deleteChunk({ chunkId: id }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: chunksKeys.byDocument(documentId),
@@ -108,6 +112,39 @@ export const ChunksManager: React.FC<ChunksManagerProps> = ({ documentId }) => {
 
   const handleDelete = (id: number) => deleteMutation.mutateAsync(id);
 
+  // Filtrar chunks según el filtro seleccionado
+  const filteredChunks = useMemo(() => {
+    if (filter === "all") return chunks;
+
+    return chunks.filter((chunk: Chunk) => {
+      const wordCount = chunk.content.split(/\s+/).length;
+
+      switch (filter) {
+        case "short":
+          return wordCount < 100;
+        case "medium":
+          return wordCount >= 100 && wordCount <= 300;
+        case "long":
+          return wordCount > 300;
+        default:
+          return true;
+      }
+    });
+  }, [chunks, filter]);
+
+  // Contar chunks por categoría
+  const chunkCounts = useMemo(() => {
+    return {
+      all: chunks.length,
+      short: chunks.filter((c: Chunk) => c.content.split(/\s+/).length < 100).length,
+      medium: chunks.filter((c: Chunk) => {
+        const wc = c.content.split(/\s+/).length;
+        return wc >= 100 && wc <= 300;
+      }).length,
+      long: chunks.filter((c: Chunk) => c.content.split(/\s+/).length > 300).length,
+    };
+  }, [chunks]);
+
   return (
     <>
       <Card>
@@ -123,14 +160,35 @@ export const ChunksManager: React.FC<ChunksManagerProps> = ({ documentId }) => {
             Nuevo Fragmento
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* Filtros con Tabs */}
+          <div className="w-full overflow-x-auto overflow-y-hidden pb-2">
+            <Tabs value={filter} onValueChange={(value) => setFilter(value as FilterType)}>
+              <TabsList className="inline-flex w-auto min-w-min">
+                <TabsTrigger value="all">
+                  Todos ({chunkCounts.all})
+                </TabsTrigger>
+                <TabsTrigger value="short">
+                  Cortos ({chunkCounts.short})
+                </TabsTrigger>
+                <TabsTrigger value="medium">
+                  Medianos ({chunkCounts.medium})
+                </TabsTrigger>
+                <TabsTrigger value="long">
+                  Largos ({chunkCounts.long})
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          {/* Tabla de chunks */}
           {isLoading ? (
             <div className="flex items-center justify-center h-32">
               <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
             </div>
           ) : (
             <ChunksTable
-              chunks={chunks}
+              chunks={filteredChunks}
               isLoading={
                 createMutation.isPending ||
                 updateMutation.isPending ||

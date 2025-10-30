@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { QRCodeSVG } from 'qrcode.react'
 import {
   getWhatsAppQRCode,
   getWhatsAppStatus,
@@ -13,6 +14,11 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { IconQrcode, IconRefresh, IconPlugConnected, IconPlugConnectedX, IconEdit } from '@tabler/icons-react'
+import { Header } from '@/components/layout/header'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { ProfileDropdown } from '@/components/profile-dropdown'
+import { TopNav } from '@/components/layout/top-nav'
+import { Search } from '@/components/search'
 
 interface WhatsAppStatusResponse {
   connected: boolean
@@ -90,13 +96,23 @@ export default function WhatsAppConnection() {
       const response = await getWhatsAppQRCode({
         sessionName,
       })
+
+      console.log('QR Code Response:', response)
+
       const qrData = response as unknown as QRCodeResponse
 
       if (qrData.qrCode) {
+        // The backend returns plain text QR code data, not an image
+        // We'll render it using QRCodeSVG component
+        console.log('QR Code text received, length:', qrData.qrCode.length)
         setQrCodeImage(qrData.qrCode)
         toast.success('Código QR generado')
+      } else {
+        console.error('No QR code in response:', qrData)
+        toast.error('No se recibió el código QR del servidor')
       }
     } catch (error: any) {
+      console.error('QR Code Error:', error)
       toast.error(error?.info || error?.message || 'Error al generar código QR')
     } finally {
       setIsGeneratingQR(false)
@@ -136,6 +152,17 @@ export default function WhatsAppConnection() {
   }
 
   return (
+    <>
+      {/* ===== Top Heading ===== */}
+      <Header>
+        <TopNav links={[]} />
+        <div className='ml-auto flex items-center space-x-4'>
+          <Search />
+          <ThemeSwitch />
+          <ProfileDropdown />
+        </div>
+      </Header>
+
     <div className='container mx-auto max-w-4xl py-8'>
       <div className='mb-6'>
         <h1 className='text-3xl font-bold'>Conexión WhatsApp</h1>
@@ -300,11 +327,12 @@ export default function WhatsAppConnection() {
               </div>
             ) : qrCodeImage ? (
               <div className='space-y-4'>
-                <div className='flex items-center justify-center rounded-lg border bg-white p-4'>
-                  <img
-                    src={qrCodeImage}
-                    alt='QR Code'
-                    className='h-64 w-64'
+                <div className='flex items-center justify-center rounded-lg border bg-white p-8'>
+                  <QRCodeSVG
+                    value={qrCodeImage}
+                    size={256}
+                    level="M"
+                    includeMargin={true}
                   />
                 </div>
                 <div className='text-center'>
@@ -366,5 +394,6 @@ export default function WhatsAppConnection() {
         </CardContent>
       </Card>
     </div>
+	</>
   )
 }

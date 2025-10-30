@@ -43,3 +43,28 @@ export const PARAMETERS_GET_ALL = "/api/v1/parameters/get-all";
 export const PARAMETERS_GET_BY_CODE = "/api/v1/parameters/get-by-code";
 export const PARAMETERS_RELOAD_CACHE = "/api/v1/parameters/reload-cache";
 export const PARAMETERS_UPDATE = "/api/v1/parameters/update";
+
+// Admin Conversations Routes
+export const CONVERSATIONS_GET_ALL = "/admin/conversations/get-all";
+export const CONVERSATIONS_GET_MESSAGES = "/admin/conversations/get-messages";
+export const CONVERSATIONS_SEND = "/admin/conversations/send";
+export const CONVERSATIONS_MARK_READ = "/admin/conversations/mark-read";
+export const CONVERSATIONS_DELETE = "/admin/conversations/delete";
+export const CONVERSATIONS_SET_TEMPORARY = "/admin/conversations/set-temporary";
+export const ADMIN_USERS_BLOCK = "/admin/users/block";
+
+// Analytics Routes
+export const ANALYTICS_OVERVIEW = "/admin/analytics/overview";
+export const ANALYTICS_COSTS = "/admin/analytics/costs";
+export const ANALYTICS_TOKENS = "/admin/analytics/tokens";
+export const ANALYTICS_USERS = "/admin/analytics/users";
+export const ANALYTICS_CONVERSATIONS = "/admin/analytics/conversations";
+export const ANALYTICS_MESSAGES = "/admin/analytics/messages";
+export const ANALYTICS_TOP_QUERIES = "/admin/analytics/top-queries";
+export const ANALYTICS_KNOWLEDGE_BASE = "/admin/analytics/knowledge-base";
+export const ANALYTICS_HEALTH = "/admin/analytics/health";
+
+// Reports Routes
+export const REPORTS_GENERATE_MONTHLY = "/admin/reports/generate-monthly";
+export const REPORTS_LIST = "/admin/reports/list";
+export const REPORTS_DOWNLOAD = "/admin/reports/download";

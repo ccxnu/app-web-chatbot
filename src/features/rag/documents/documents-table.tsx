@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Edit2, Trash2, Eye } from "lucide-react";
+import { MoreHorizontal, Edit2, Trash2, Eye, FileText } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import type { Document } from "./types";
@@ -26,6 +26,7 @@ interface DocumentsTableProps {
   onEdit: (document: Document) => void;
   onDelete: (id: number) => Promise<void>;
   onView: (document: Document) => void;
+  onViewChunks: (document: Document) => void;
 }
 
 export const DocumentsTable: React.FC<DocumentsTableProps> = ({
@@ -34,6 +35,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
   onEdit,
   onDelete,
   onView,
+  onViewChunks,
 }) => {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -63,6 +65,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
             <TableHead>Categoría</TableHead>
             <TableHead>Descripción</TableHead>
             <TableHead>Creado</TableHead>
+            <TableHead className="text-center">Chunks</TableHead>
             <TableHead className="text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
@@ -81,6 +84,17 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
                   addSuffix: true,
                   locale: es,
                 })}
+              </TableCell>
+              <TableCell className="text-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onViewChunks(document)}
+                  disabled={isLoading || deletingId === document.id}
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  Ver Fragmentos
+                </Button>
               </TableCell>
               <TableCell className="text-right">
                 <DropdownMenu>

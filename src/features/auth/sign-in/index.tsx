@@ -42,14 +42,14 @@ export default function SignIn() {
           </div>
           <UserAuthForm />
           <p className='text-muted-foreground px-8 text-center text-sm'>
-            Al hacer en Iniciar Sesión, tu aceptas nuestros{' '}
+            Al hacer clic en Iniciar Sesión, aceptas nuestros{' '}
             <a
               href='/terms'
               className='hover:text-primary underline underline-offset-4'
             >
               Términos de Servicio
             </a>{' '}
-            and{' '}
+            y{' '}
             <a
               href='/privacy'
               className='hover:text-primary underline underline-offset-4'

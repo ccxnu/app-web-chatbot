@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,12 +23,12 @@ type UserAuthFormProps = HTMLAttributes<HTMLFormElement>
 const formSchema = z.object({
   username: z
     .string()
-    .min(3, { message: 'Username must be at least 3 characters' })
-    .max(50, { message: 'Username must not exceed 50 characters' }),
+    .min(3, { message: 'El nombre de usuario debe tener al menos 3 caracteres' })
+    .max(50, { message: 'El nombre de usuario no debe exceder 50 caracteres' }),
   password: z
     .string()
     .min(8, {
-      message: 'Password must be at least 8 characters long',
+      message: 'La contraseña debe tener al menos 8 caracteres',
     }),
 })
 
@@ -79,9 +78,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           name='username'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Usuario</FormLabel>
               <FormControl>
-                <Input placeholder='admin' {...field} />
+                <Input placeholder='usuario' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,7 +91,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           name='password'
           render={({ field }) => (
             <FormItem className='relative'>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Contraseña</FormLabel>
               <FormControl>
                 <PasswordInput placeholder='********' {...field} />
               </FormControl>
@@ -101,34 +100,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 to='/olvide-mi-contrasena'
                 className='text-muted-foreground absolute -top-0.5 right-0 text-sm font-medium hover:opacity-75'
               >
-                Forgot password?
+                ¿Olvidaste tu contraseña?
               </Link>
             </FormItem>
           )}
         />
         <Button className='mt-2' disabled={loginMutation.isPending}>
-          {loginMutation.isPending ? 'Logging in...' : 'Login'}
+          {loginMutation.isPending ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </Button>
-
-        <div className='relative my-2'>
-          <div className='absolute inset-0 flex items-center'>
-            <span className='w-full border-t' />
-          </div>
-          <div className='relative flex justify-center text-xs uppercase'>
-            <span className='bg-background text-muted-foreground px-2'>
-              Or continue with
-            </span>
-          </div>
-        </div>
-
-        <div className='grid grid-cols-2 gap-2'>
-          <Button variant='outline' type='button' disabled={loginMutation.isPending}>
-            <IconBrandGithub className='h-4 w-4' /> GitHub
-          </Button>
-          <Button variant='outline' type='button' disabled={loginMutation.isPending}>
-            <IconBrandFacebook className='h-4 w-4' /> Facebook
-          </Button>
-        </div>
       </form>
     </Form>
   )

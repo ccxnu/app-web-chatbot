@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 import { format } from 'date-fns'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   IconArrowLeft,
   IconDotsVertical,
@@ -24,25 +25,77 @@ import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { Loader2 } from 'lucide-react'
 import { NewChat } from './components/new-chat'
-import { type ChatUser, type Convo } from './data/chat-types'
-// Fake Data
-import { conversations } from './data/convo.json'
+import {
+  conversationToChatUser,
+  apiMessagesToConvos,
+  type ChatUser,
+  type Convo
+} from './data/adapters'
+import {
+  getAllConversations,
+  getConversationMessages,
+  conversationsKeys,
+} from '@/api/services'
+import type { Conversation } from '@/api/frontend-types/conversation.types'
 
 export default function Chats() {
   const [search, setSearch] = useState('')
   const [selectedUser, setSelectedUser] = useState<ChatUser | null>(null)
+  const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null)
   const [mobileSelectedUser, setMobileSelectedUser] = useState<ChatUser | null>(
     null
   )
   const [createConversationDialogOpened, setCreateConversationDialog] =
     useState(false)
 
-  // Filtered data based on the search query
-  const filteredChatList = conversations.filter(({ fullName }) =>
-    fullName.toLowerCase().includes(search.trim().toLowerCase())
-  )
+  // Obtener todas las conversaciones
+  const { data: conversations = [], isLoading: isLoadingConversations } = useQuery({
+    queryKey: conversationsKeys.list('all'),
+    queryFn: () =>
+      getAllConversations({
+        filter: 'all',
+        limit: 100,
+        offset: 0,
+      }),
+  })
 
+  // Obtener mensajes de la conversación seleccionada
+  const { data: messages = [], isLoading: isLoadingMessages } = useQuery({
+    queryKey: conversationsKeys.messages(selectedConversationId!),
+    queryFn: () =>
+      getConversationMessages({
+        conversationId: selectedConversationId!,
+        limit: 100,
+      }),
+    enabled: selectedConversationId !== null,
+  })
+
+  // Convertir conversaciones de API a formato ChatUser
+  const chatUsers = useMemo(() => {
+    return conversations.map(conversationToChatUser)
+  }, [conversations])
+
+  // Filtered data based on the search query
+  const filteredChatList = useMemo(() => {
+    return chatUsers.filter((user: ChatUser) =>
+      user.fullName.toLowerCase().includes(search.trim().toLowerCase())
+    )
+  }, [chatUsers, search])
+
+  // Actualizar mensajes del usuario seleccionado cuando cambian
+  useEffect(() => {
+    if (selectedUser && messages.length > 0) {
+      const convos = apiMessagesToConvos(messages)
+      setSelectedUser({
+        ...selectedUser,
+        messages: convos,
+      })
+    }
+  }, [messages])
+
+  // Organizar mensajes por fecha
   const currentMessage = selectedUser?.messages.reduce(
     (acc: Record<string, Convo[]>, obj) => {
       const key = format(obj.timestamp, 'd MMM, yyyy')
@@ -60,7 +113,17 @@ export default function Chats() {
     {}
   )
 
-  const users = conversations.map(({ messages, ...user }) => user)
+  const users = chatUsers.map((chatUser: ChatUser) => {
+    const { messages, ...user } = chatUser
+    return user
+  })
+
+  // Manejar selección de usuario
+  const handleSelectUser = (chatUser: ChatUser) => {
+    setSelectedUser(chatUser)
+    setMobileSelectedUser(chatUser)
+    setSelectedConversationId(Number(chatUser.id))
+  }
 
   return (
     <>
@@ -108,45 +171,53 @@ export default function Chats() {
             </div>
 
             <ScrollArea className='-mx-3 h-full overflow-scroll p-3'>
-              {filteredChatList.map((chatUsr) => {
-                const { id, profile, username, messages, fullName } = chatUsr
-                const lastConvo = messages[0]
-                const lastMsg =
-                  lastConvo.sender === 'You'
-                    ? `You: ${lastConvo.message}`
-                    : lastConvo.message
-                return (
-                  <Fragment key={id}>
-                    <button
-                      type='button'
-                      className={cn(
-                        `hover:bg-secondary/75 -mx-1 flex w-full rounded-md px-2 py-2 text-left text-sm`,
-                        selectedUser?.id === id && 'sm:bg-muted'
-                      )}
-                      onClick={() => {
-                        setSelectedUser(chatUsr)
-                        setMobileSelectedUser(chatUsr)
-                      }}
-                    >
-                      <div className='flex gap-2'>
-                        <Avatar>
-                          <AvatarImage src={profile} alt={username} />
-                          <AvatarFallback>{username}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <span className='col-start-2 row-span-2 font-medium'>
-                            {fullName}
-                          </span>
-                          <span className='text-muted-foreground col-start-2 row-span-2 row-start-2 line-clamp-2 text-ellipsis'>
-                            {lastMsg}
-                          </span>
+              {isLoadingConversations ? (
+                <div className="flex items-center justify-center h-32">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              ) : filteredChatList.length === 0 ? (
+                <div className="flex items-center justify-center h-32 text-muted-foreground text-sm">
+                  {search ? 'No se encontraron conversaciones' : 'No hay conversaciones disponibles'}
+                </div>
+              ) : (
+                filteredChatList.map((chatUsr: ChatUser) => {
+                  const { id, profile, username, messages, fullName } = chatUsr
+                  const lastConvo = messages[0]
+                  const lastMsg = lastConvo
+                    ? lastConvo.sender === 'You'
+                      ? `You: ${lastConvo.message}`
+                      : lastConvo.message
+                    : 'Sin mensajes'
+                  return (
+                    <Fragment key={id}>
+                      <button
+                        type='button'
+                        className={cn(
+                          `hover:bg-secondary/75 -mx-1 flex w-full rounded-md px-2 py-2 text-left text-sm`,
+                          selectedUser?.id === id && 'sm:bg-muted'
+                        )}
+                        onClick={() => handleSelectUser(chatUsr)}
+                      >
+                        <div className='flex gap-2'>
+                          <Avatar>
+                            <AvatarImage src={profile} alt={username} />
+                            <AvatarFallback>{username}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <span className='col-start-2 row-span-2 font-medium'>
+                              {fullName}
+                            </span>
+                            <span className='text-muted-foreground col-start-2 row-span-2 row-start-2 line-clamp-2 text-ellipsis'>
+                              {lastMsg}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    </button>
-                    <Separator className='my-1' />
-                  </Fragment>
-                )
-              })}
+                      </button>
+                      <Separator className='my-1' />
+                    </Fragment>
+                  )
+                })
+              )}
             </ScrollArea>
           </div>
 
@@ -220,10 +291,14 @@ export default function Chats() {
                 <div className='flex size-full flex-1'>
                   <div className='chat-text-container relative -mr-4 flex flex-1 flex-col overflow-y-hidden'>
                     <div className='chat-flex flex h-40 w-full grow flex-col-reverse justify-start gap-4 overflow-y-auto py-2 pr-4 pb-4'>
-                      {currentMessage &&
-                        Object.keys(currentMessage).map((key) => (
+                      {isLoadingMessages ? (
+                        <div className="flex items-center justify-center h-full">
+                          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                        </div>
+                      ) : currentMessage && Object.keys(currentMessage).length > 0 ? (
+                        Object.keys(currentMessage).map((key: string) => (
                           <Fragment key={key}>
-                            {currentMessage[key].map((msg, index) => (
+                            {currentMessage?.[key]?.map((msg, index) => (
                               <div
                                 key={`${msg.sender}-${msg.timestamp}-${index}`}
                                 className={cn(
@@ -246,7 +321,12 @@ export default function Chats() {
                             ))}
                             <div className='text-center text-xs'>{key}</div>
                           </Fragment>
-                        ))}
+                        ))
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+                          No hay mensajes en esta conversación
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

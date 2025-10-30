@@ -38,8 +38,17 @@ export interface CreateChunkRequest {
   content: string;
 }
 
-export interface UpdateChunkRequest extends CreateChunkRequest {
-  id: number;
+export interface UpdateChunkRequest {
+  chunkId: number;
+  content: string;
+}
+
+export interface DeleteChunkRequest {
+  chunkId: number;
+}
+
+export interface GetChunksByDocumentRequest {
+  docId: number;
 }
 
 export interface DocumentsTableState {

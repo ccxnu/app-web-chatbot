@@ -53,7 +53,7 @@ export const ChunksTable: React.FC<ChunksTableProps> = ({
     }
   };
 
-  if (chunks.length === 0) {
+  if (!chunks || chunks.length === 0) {
     return (
       <div className="flex items-center justify-center h-32 text-muted-foreground">
         No hay fragmentos para este documento.
@@ -80,7 +80,7 @@ export const ChunksTable: React.FC<ChunksTableProps> = ({
               <TableRow key={chunk.id}>
                 <TableCell className="font-mono text-sm">#{chunk.id}</TableCell>
                 <TableCell>
-                  <div className="max-w-2xl truncate text-sm">
+                  <div className="max-w-2xl text-sm line-clamp-3">
                     {chunk.content}
                   </div>
                 </TableCell>

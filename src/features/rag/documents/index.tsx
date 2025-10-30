@@ -22,6 +22,8 @@ export const DocumentsManager: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<Document | undefined>();
   const [viewingDocument, setViewingDocument] = useState<Document | undefined>();
+  const [chunksDocument, setChunksDocument] = useState<Document | undefined>();
+  const [activeTab, setActiveTab] = useState("documents");
   const queryClient = useQueryClient();
 
   // Obtener todos los documentos
@@ -29,8 +31,8 @@ export const DocumentsManager: React.FC = () => {
     queryKey: documentsKeys.all,
     queryFn: () =>
       getAllDocuments({
-        page: 1,
-        pageSize: 100,
+        offset: 0,
+        limit: 100,
       }),
   });
 
@@ -102,6 +104,11 @@ export const DocumentsManager: React.FC = () => {
     setViewingDocument(document);
   };
 
+  const handleViewChunks = (document: Document) => {
+    setChunksDocument(document);
+    setActiveTab("chunks");
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -117,11 +124,11 @@ export const DocumentsManager: React.FC = () => {
         </Button>
       </div>
 
-      <Tabs defaultValue="documents" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList>
           <TabsTrigger value="documents">Documentos ({documents.length})</TabsTrigger>
-          <TabsTrigger value="chunks" disabled={!selectedDocument && !viewingDocument}>
-            Fragmentos
+          <TabsTrigger value="chunks" disabled={!chunksDocument}>
+            Fragmentos {chunksDocument && `- ${chunksDocument.title}`}
           </TabsTrigger>
         </TabsList>
 
@@ -149,6 +156,7 @@ export const DocumentsManager: React.FC = () => {
                   onEdit={handleEdit}
                   onDelete={handleDelete}
                   onView={handleView}
+                  onViewChunks={handleViewChunks}
                 />
               )}
             </CardContent>
@@ -156,19 +164,19 @@ export const DocumentsManager: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="chunks" className="space-y-4">
-          {viewingDocument ? (
+          {chunksDocument ? (
             <div className="space-y-4">
               <Card className="bg-muted/50">
                 <CardContent className="pt-6">
                   <div className="space-y-2">
-                    <h3 className="font-semibold">{viewingDocument.title}</h3>
+                    <h3 className="font-semibold">{chunksDocument.title}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {viewingDocument.description}
+                      {chunksDocument.description}
                     </p>
                   </div>
                 </CardContent>
               </Card>
-              <ChunksManager documentId={viewingDocument.id} />
+              <ChunksManager documentId={chunksDocument.id} />
             </div>
           ) : (
             <Card>
