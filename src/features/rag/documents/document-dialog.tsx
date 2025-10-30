@@ -107,7 +107,7 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {document ? "Editar Documento" : "Crear Nuevo Documento"}

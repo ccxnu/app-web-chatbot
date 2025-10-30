@@ -193,7 +193,7 @@ export const PDFUploadDialog: React.FC<PDFUploadDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Subir Documento PDF</DialogTitle>
           <DialogDescription>
