@@ -45,15 +45,10 @@ export const sidebarData: SidebarData = {
           url: '/chats',
           icon: IconMessages,
         },
-        {
-          title: 'Usuarios',
-          url: '/usuarios',
-          icon: IconUsers,
-        },
       ],
     },
     {
-      title: 'RAG',
+      title: 'Conocimiento',
       items: [
         {
           title: 'Documentos',
@@ -71,14 +66,9 @@ export const sidebarData: SidebarData = {
           icon: IconBrowserCheck,
         },
         {
-          title: 'Configuración',
-          url: '/configuration',
-          icon: IconSettings,
-        },
-        {
-          title: 'Permisos',
-          url: '/sistema/permisos',
-          icon: IconTool,
+          title: 'Usuarios',
+          url: '/usuarios',
+          icon: IconUsers,
         },
       ],
     },
