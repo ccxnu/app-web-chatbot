@@ -9,7 +9,7 @@ export const axiosClient: AxiosInstance = (() => {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        timeout: 15000, // 5 seconds
+        timeout: 10000, // 5 seconds
         withCredentials: false,
     });
 })();

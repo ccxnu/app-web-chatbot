@@ -133,7 +133,7 @@ const result = await Bun.build({
 	"import.meta.env.DEV": JSON.stringify(false),
 	"import.meta.env.PROD": JSON.stringify(true),
     "import.meta.env.VITE_BASE_URL": JSON.stringify("/"),
-    "import.meta.env.VITE_BACKEND_URL": JSON.stringify("/api"),
+    "import.meta.env.VITE_BACKEND_URL": JSON.stringify("/api/v1"),
   },
   ...cliConfig,
 });
