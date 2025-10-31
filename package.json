@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "bun --hot src/index.tsx",
+    "build": "bun run build.ts --public-path /",
     "generate-routes": "tsr generate",
     "watch-routes": "tsr watch",
     "start": "NODE_ENV=production bun run watch-routes & bun src/index.tsx",
-    "build": "bun run build.ts",
     "lint": "eslint ."
   },
   "dependencies": {

@@ -447,5 +447,5 @@ export class ApiClient {
  * You can create multiple instances with different configurations
  */
 export const apiClient = new ApiClient({
-  baseUrl: process.env.REACT_APP_API_URL || 'http://localhost:8080',
+  baseUrl: import.meta.env.VITE_BACKEND_UR || 'http://localhost:8080',
 });

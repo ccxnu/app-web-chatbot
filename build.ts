@@ -130,7 +130,10 @@ const result = await Bun.build({
   target: "browser",
   sourcemap: "linked",
   define: {
-    "process.env.NODE_ENV": JSON.stringify("production"),
+	"import.meta.env.DEV": JSON.stringify(false),
+	"import.meta.env.PROD": JSON.stringify(true),
+    "import.meta.env.VITE_BASE_URL": JSON.stringify("/"),
+    "import.meta.env.VITE_BACKEND_URL": JSON.stringify("/api"),
   },
   ...cliConfig,
 });

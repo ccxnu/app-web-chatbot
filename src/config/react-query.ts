@@ -22,7 +22,7 @@ export const queryClient = new QueryClient({
                     [401, 403].includes(error.response?.status ?? 0)
                 ) return false;
 
-                if (error?.code && String(error.code).startsWith("COD_ERR_")) return false;
+                if (error?.code && String(error.code).startsWith("ERR_")) return false;
                 return true;
             },
             refetchOnWindowFocus: import.meta.env.PROD,
@@ -61,7 +61,7 @@ export const queryClient = new QueryClient({
                   toast.error('Session expired!')
                   useAuthStore.getState().auth.reset()
                   const redirect = `${router.history.location.href}`
-                  router.navigate({ to: '/sign-in', search: { redirect } })
+                  router.navigate({ to: '/iniciar-sesion', search: { redirect } })
                 }
 
                 if (error.response?.status === 500)

@@ -5,10 +5,9 @@ cd "$(dirname "$0")"
 echo ">> Start"
 
 # Variables
-NAME_CONTAINER="cnt-front-chatbot"
-NAME_IMAGE="img_front_chatbot"
+NAME_CONTAINER="cnt_front_chatbot"
+NAME_IMAGE="img-front-chatbot"
 PORT_EXPOSE=6600
-CONFIG_FOLDER="/config/appWebChatbot/"
 
 docker build --target production -t "$NAME_IMAGE" -f Dockerfile .
 
@@ -23,7 +22,6 @@ fi
 docker run -d \
     --restart=always \
     --name "$NAME_CONTAINER" \
-    --env-file "$CONFIG_FOLDER".env \
     -p "$PORT_EXPOSE":80 \
     "$NAME_IMAGE"
 

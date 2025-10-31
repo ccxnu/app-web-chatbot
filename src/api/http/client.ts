@@ -4,8 +4,8 @@ import { adminRefreshToken } from "@/api/services/auth/admin-auth.api";
 
 export const axiosClient: AxiosInstance = (() => {
     return axios.create({
-        //baseURL: import.meta.env.VITE_BASE_URL,
-        baseURL: "http://localhost:8080/",
+        baseURL: import.meta.env.VITE_BACKEND_URL,
+        // baseURL: "http://localhost:8080/",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
