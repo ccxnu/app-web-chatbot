@@ -8,6 +8,7 @@ import {
   IconPalette,
   IconSettings,
   IconTool,
+  IconUser,
   IconUsers,
 } from '@tabler/icons-react'
 import { type SidebarData } from '../types'
@@ -65,11 +66,16 @@ export const sidebarData: SidebarData = {
           url: '/sistema/parametros',
           icon: IconBrowserCheck,
         },
-        {
-          title: 'Usuarios',
-          url: '/usuarios',
-          icon: IconUsers,
-        },
+        // {
+        //   title: 'Perfil',
+        //   url: '/configuration',
+        //   icon: IconUser,
+        // },
+        // {
+        //   title: 'Usuarios',
+        //   url: '/usuarios',
+        //   icon: IconUsers,
+        // },
       ],
     },
   ],

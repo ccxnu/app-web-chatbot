@@ -59,12 +59,12 @@ export function ProfileDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-			<Link to='/configuration'>
-			  <Settings />
-			  Configuración
-			</Link>
-		  </DropdownMenuItem>
+			{/*        <DropdownMenuItem asChild> */}
+			{/* <Link to='/configuration'> */}
+			{/*   <Settings /> */}
+			{/*   Configuración */}
+			{/* </Link> */}
+			{/*  </DropdownMenuItem> */}
 		  <DropdownMenuItem asChild>
 			<Link to='/configuration'>
 			  <BadgeCheck />
