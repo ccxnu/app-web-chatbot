@@ -94,6 +94,7 @@ export const useAuthStore = create<AuthState>()((set) => {
           localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
           localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
           localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO)
+          localStorage.removeItem(STORAGE_KEYS.ID_SESSION)
           Cookies.remove(STORAGE_KEYS.ACCESS_TOKEN)
 
           return {

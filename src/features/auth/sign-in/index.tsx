@@ -18,19 +18,15 @@ export default function SignIn() {
   return (
     <div className='relative container grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <div className='bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-r'>
-        <div className='absolute inset-0 bg-zinc-900' />
+        <div className='absolute inset-0 bg-zinc-300' />
         <div className='relative z-20 flex items-center text-lg font-medium'>
-		<GraduationCap className='w-6 h-6 text-primary' />
-          Chatbot ISTS
+		<GraduationCap className='w-6 h-6 text-secondary' />
+          Chatbot Institutional
         </div>
 
-        <img
-          src={ViteLogo}
-          className='relative m-auto'
-          width={301}
-          height={60}
-          alt='Vite'
-        />
+		<h1 className='mb-6 text-6xl relative m-auto font-extrabold tracking-tight sm:text-7xl lg:text-8xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600'>
+		  Automatiza tu Atención Estudiantil
+		</h1>
 	</div>
 
       <div className='lg:p-8'>
@@ -38,28 +34,10 @@ export default function SignIn() {
           <div className='flex flex-col space-y-2 text-left'>
             <h1 className='text-2xl font-semibold tracking-tight'>Iniciar Sesión</h1>
             <p className='text-muted-foreground text-sm'>
-              Ingresa tu usuario y contraseña en la parte de abajo<br />
-              para iniciar sesión
+              Ingresa tus credenciales para acceder al panel de control
             </p>
           </div>
           <UserAuthForm />
-          {/* <p className='text-muted-foreground px-8 text-center text-sm'> */}
-          {/*   Al hacer clic en Iniciar Sesión, aceptas nuestros{' '} */}
-          {/*   <a */}
-          {/*     href='/terms' */}
-          {/*     className='hover:text-primary underline underline-offset-4' */}
-          {/*   > */}
-          {/*     Términos de Servicio */}
-          {/*   </a>{' '} */}
-          {/*   y{' '} */}
-          {/*   <a */}
-          {/*     href='/privacy' */}
-          {/*     className='hover:text-primary underline underline-offset-4' */}
-          {/*   > */}
-          {/*     Política de Privacidad */}
-          {/*   </a> */}
-          {/*   . */}
-          {/* </p> */}
         </div>
       </div>
     </div>

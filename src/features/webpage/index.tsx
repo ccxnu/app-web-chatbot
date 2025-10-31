@@ -36,7 +36,7 @@ function AppHeader({ isAuthenticated }: { isAuthenticated: boolean }) {
                 {/* Logo o Título Principal */}
                 <Link to='/' className='flex items-center space-x-2 font-bold text-xl tracking-tight'>
                     <GraduationCap className='w-6 h-6 text-primary' />
-                    <span>Chatbot ISTS</span>
+                    <span>Chatbot Istitucional</span>
                 </Link>
 
                 {/* Enlaces de Navegación */}

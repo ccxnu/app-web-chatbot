@@ -50,11 +50,6 @@ export const sidebarData: SidebarData = {
           url: '/usuarios',
           icon: IconUsers,
         },
-        {
-          title: 'Estadísticas',
-          url: '/estadisticas',
-          icon: IconChartBar,
-        },
       ],
     },
     {
@@ -71,29 +66,19 @@ export const sidebarData: SidebarData = {
       title: 'Configuración',
       items: [
         {
+          title: 'Parametros',
+          url: '/sistema/parametros',
+          icon: IconBrowserCheck,
+        },
+        {
           title: 'Configuración',
           url: '/configuration',
           icon: IconSettings,
         },
-      ],
-    },
-    {
-      title: 'Sistema',
-      items: [
         {
           title: 'Permisos',
           url: '/sistema/permisos',
           icon: IconTool,
-        },
-        {
-          title: 'Funcionalidades',
-          url: '/sistema/funcionalidades',
-          icon: IconPalette,
-        },
-        {
-          title: 'Parametros',
-          url: '/sistema/parametros',
-          icon: IconBrowserCheck,
         },
       ],
     },

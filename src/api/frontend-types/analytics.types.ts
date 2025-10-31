@@ -7,13 +7,13 @@
  * Analytics overview metrics
  */
 export interface AnalyticsOverview {
-  costThisMonth: number;
+  costThisMonth: number | null;
   tokensThisMonth: number;
   activeUsersToday: number;
   conversationsThisMonth: number;
   messagesToday: number;
-  avgResponseTimeMs: number;
-  adminInterventionRate: number;
+  avgResponseTimeMs: number | null;
+  adminInterventionRate: number | null;
   lastUpdated: string; // ISO 8601 timestamp
 }
 
@@ -23,16 +23,16 @@ export interface AnalyticsOverview {
 export interface CostAnalytics {
   periodStart: string; // ISO 8601 timestamp
   periodEnd: string; // ISO 8601 timestamp
-  totalCost: number;
-  llmCost: number;
-  embeddingCost: number;
-  promptTokens: number;
-  completionTokens: number;
-  totalTokens: number;
-  embeddingTokens: number;
-  conversationCount: number;
-  costPerConversation: number;
-  avgTokensPerConversation: number;
+  totalCost: number | null;
+  llmCost: number | null;
+  embeddingCost: number | null;
+  promptTokens: number | null;
+  completionTokens: number | null;
+  totalTokens: number | null;
+  embeddingTokens: number | null;
+  conversationCount: number | null;
+  costPerConversation: number | null;
+  avgTokensPerConversation: number | null;
 }
 
 /**
@@ -55,7 +55,7 @@ export interface TokenUsageData {
   totalTokens: number;
   messageCount: number;
   conversationCount: number;
-  avgTokensPerMessage: number;
+  avgTokensPerMessage: number | null;
 }
 
 /**
@@ -78,8 +78,8 @@ export interface ActiveUsersMetrics {
   students: number;
   professors: number;
   external: number;
-  avgMessagesPerUser: number;
-  avgSessionsPerUser: number;
+  avgMessagesPerUser: number | null;
+  avgSessionsPerUser: number | null;
 }
 
 /**
@@ -97,9 +97,9 @@ export interface ConversationMetrics {
   totalConversations: number;
   activeConversations: number;
   newConversations: number;
-  avgMessagesPerConversation: number;
+  avgMessagesPerConversation: number | null;
   conversationsWithAdminHelp: number;
-  adminInterventionRate: number;
+  adminInterventionRate: number | null;
   blockedConversations: number;
   temporaryConversations: number;
 }
@@ -113,7 +113,7 @@ export interface MessageAnalytics {
   userMessages: number;
   botMessages: number;
   adminMessages: number;
-  avgMessagesPerDay: number;
+  avgMessagesPerDay: number | null;
   peakHour: number; // 0-23
   peakHourCount: number;
 }
@@ -124,7 +124,7 @@ export interface MessageAnalytics {
 export interface TopQuery {
   queryText: string;
   queryCount: number;
-  avgSimilarity: number;
+  avgSimilarity: number | null;
   lastAsked: string; // ISO 8601 timestamp
   hasGoodAnswer: boolean;
 }
@@ -145,7 +145,7 @@ export interface KnowledgeBaseUsage {
   chunkId: number;
   documentTitle: string;
   usageCount: number;
-  avgSimilarity: number;
+  avgSimilarity: number | null;
   lastUsed: string; // ISO 8601 timestamp
 }
 
@@ -161,6 +161,6 @@ export interface KnowledgeBaseParams {
  */
 export interface SystemHealthMetric {
   metricName: string;
-  metricValue: number;
+  metricValue: number | null;
   metricUnit: string;
 }

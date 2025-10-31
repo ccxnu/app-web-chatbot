@@ -14,6 +14,7 @@ import {
 import type { CreateAdminRequest } from "@/api/frontend-types/requests.types";
 import type { IBase } from "@/api/entities/solicitud";
 import { STORAGE_KEYS } from "@/api/http/types";
+import { useAuthStore } from "@/stores/authStore";
 
 /**
  * Hook for admin login
@@ -84,6 +85,7 @@ export const useAdminRefreshToken = () => {
  */
 export const useAdminLogout = () => {
   const queryClient = useQueryClient();
+  const clearAuth = useAuthStore((state) => state.adminAuth.clearAuth);
 
   return useMutation({
     mutationFn: () => {
@@ -94,22 +96,17 @@ export const useAdminLogout = () => {
       return adminLogout(refreshToken);
     },
     onSuccess: () => {
-      // Clear all tokens and user info
-      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.ID_SESSION);
-      localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
+      // Clear Zustand store (this also clears localStorage and cookies)
+      clearAuth();
+
       // Clear all queries
       queryClient.clear();
 
       toast.success("Sesión cerrada exitosamente");
     },
     onError: (error: any) => {
-      // Clear tokens even on error
-      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.ID_SESSION);
-      localStorage.removeItem(STORAGE_KEYS.ADMIN_USER_INFO);
+      // Clear auth even on error
+      clearAuth();
 
       toast.error(error?.info || error?.message || "Error al cerrar sesión");
     },

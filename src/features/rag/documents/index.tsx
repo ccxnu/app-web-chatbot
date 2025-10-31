@@ -19,6 +19,11 @@ import { DocumentsTable } from "./documents-table";
 import { ChunksManager } from "./chunks-manager";
 import { DocumentViewer } from "./document-viewer";
 import type { Document, CreateDocumentRequest, UploadPDFDocumentRequest } from "./types";
+import { Header } from "@/components/layout/header";
+import { Search } from "@/components/search";
+import { ProfileDropdown } from "@/components/profile-dropdown";
+import { TopNav } from "@/components/layout/top-nav";
+import { ThemeSwitch } from "@/components/theme-switch";
 
 export const DocumentsManager: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -134,6 +139,15 @@ export const DocumentsManager: React.FC = () => {
   };
 
   return (
+  <>
+  <Header>
+	<TopNav links={[]} />
+	<div className='ml-auto flex items-center space-x-4'>
+	  <Search />
+	  <ThemeSwitch />
+	  <ProfileDropdown />
+	</div>
+  </Header>
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -240,5 +254,6 @@ export const DocumentsManager: React.FC = () => {
         />
       )}
     </div>
+	</>
   );
 };
