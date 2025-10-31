@@ -4,13 +4,12 @@ import { adminRefreshToken } from "@/api/services/auth/admin-auth.api";
 
 export const axiosClient: AxiosInstance = (() => {
     return axios.create({
-        // baseURL: import.meta.env.VITE_BACKEND_URL,
-        baseURL: "http://localhost:8080/",
+        baseURL: import.meta.env.VITE_BACKEND_URL,
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        timeout: 10000, // 5 seconds
+        timeout: 15000, // 5 seconds
         withCredentials: false,
     });
 })();
