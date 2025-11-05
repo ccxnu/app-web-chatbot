@@ -139,6 +139,26 @@ export default function WhatsAppConnection() {
     }
   }, [status])
 
+  // Auto-refresh QR code every 5 seconds when not connected
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | null = null
+
+    if (status && !status.connected && qrCodeImage) {
+      console.log('Starting QR auto-refresh interval')
+      intervalId = setInterval(() => {
+        console.log('Auto-refreshing QR code')
+        generateQRCode()
+      }, 5000) // Refresh every 5 seconds
+    }
+
+    return () => {
+      if (intervalId) {
+        console.log('Clearing QR auto-refresh interval')
+        clearInterval(intervalId)
+      }
+    }
+  }, [status?.connected, qrCodeImage])
+
   const handleLogout = () => {
     logoutMutation.mutate()
   }
