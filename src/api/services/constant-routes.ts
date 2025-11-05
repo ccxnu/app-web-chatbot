@@ -9,6 +9,8 @@ export const WHATSAPP_CONVERSATION_HISTORY = "/admin/whatsapp/conversation-histo
 export const WHATSAPP_QR_CODE = "/admin/whatsapp/qr-code";
 export const WHATSAPP_STATUS = "/admin/whatsapp/status";
 export const WHATSAPP_UPDATE_STATUS = "/admin/whatsapp/update-status";
+export const WHATSAPP_LOGOUT = "/admin/whatsapp/logout";
+export const WHATSAPP_RECONNECT = "/admin/whatsapp/reconnect";
 
 // Chunks Routes
 export const CHUNKS_BULK_CREATE = "/chunks/bulk-create";

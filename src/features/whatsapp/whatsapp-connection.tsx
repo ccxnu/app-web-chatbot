@@ -6,6 +6,8 @@ import {
   getWhatsAppQRCode,
   getWhatsAppStatus,
   updateWhatsAppStatus,
+  logoutWhatsApp,
+  reconnectWhatsApp,
   whatsappKeys,
 } from '@/api/services/admin/whatsapp.api'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { IconQrcode, IconRefresh, IconPlugConnected, IconPlugConnectedX, IconEdit } from '@tabler/icons-react'
+import { IconQrcode, IconRefresh, IconPlugConnected, IconPlugConnectedX, IconEdit, IconLogout } from '@tabler/icons-react'
 import { Header } from '@/components/layout/header'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { ProfileDropdown } from '@/components/profile-dropdown'
@@ -89,6 +91,34 @@ export default function WhatsAppConnection() {
     },
   })
 
+  // Mutation para logout
+  const logoutMutation = useMutation({
+    mutationFn: () => logoutWhatsApp({ sessionName }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: whatsappKeys.status() })
+      setQrCodeImage(null)
+      toast.success('Sesión cerrada correctamente. Genera un nuevo código QR para reconectar.')
+    },
+    onError: (error: any) => {
+      toast.error(error?.info || error?.message || 'Error al cerrar sesión')
+    },
+  })
+
+  // Mutation para reconnect
+  const reconnectMutation = useMutation({
+    mutationFn: () => reconnectWhatsApp({ sessionName }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: whatsappKeys.status() })
+      setQrCodeImage(null)
+      toast.success('Reconectando... Genera un nuevo código QR.')
+      // Auto-generate QR after reconnect
+      setTimeout(() => generateQRCode(), 1000)
+    },
+    onError: (error: any) => {
+      toast.error(error?.info || error?.message || 'Error al reconectar')
+    },
+  })
+
   // Función para generar QR code
   const generateQRCode = async () => {
     setIsGeneratingQR(true)
@@ -129,6 +159,14 @@ export default function WhatsAppConnection() {
   const handleDisconnect = () => {
     updateStatusMutation.mutate(false)
     setQrCodeImage(null)
+  }
+
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
+
+  const handleReconnect = () => {
+    reconnectMutation.mutate()
   }
 
   const handleSaveSessionName = () => {
@@ -278,26 +316,51 @@ export default function WhatsAppConnection() {
                   </div>
                 )}
 
-                <div className='flex gap-2 pt-4'>
+                <div className='space-y-2 pt-4'>
                   <Button
                     variant='outline'
                     size='sm'
                     onClick={() => refetchStatus()}
-                    className='flex-1'
+                    className='w-full'
                   >
                     <IconRefresh className='mr-2 h-4 w-4' />
-                    Actualizar
+                    Actualizar Estado
                   </Button>
 
                   {status?.connected && (
+                    <>
+                      <Button
+                        variant='destructive'
+                        size='sm'
+                        onClick={handleDisconnect}
+                        disabled={updateStatusMutation.isPending}
+                        className='w-full'
+                      >
+                        Desconectar
+                      </Button>
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={handleLogout}
+                        disabled={logoutMutation.isPending}
+                        className='w-full'
+                      >
+                        <IconLogout className='mr-2 h-4 w-4' />
+                        Cerrar Sesión
+                      </Button>
+                    </>
+                  )}
+
+                  {!status?.connected && (
                     <Button
-                      variant='destructive'
+                      variant='outline'
                       size='sm'
-                      onClick={handleDisconnect}
-                      disabled={updateStatusMutation.isPending}
-                      className='flex-1'
+                      onClick={handleReconnect}
+                      disabled={reconnectMutation.isPending}
+                      className='w-full'
                     >
-                      Desconectar
+                      <IconRefresh className='mr-2 h-4 w-4' />
+                      {reconnectMutation.isPending ? 'Reconectando...' : 'Reconectar'}
                     </Button>
                   )}
                 </div>

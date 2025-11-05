@@ -7,6 +7,8 @@ import {
   WHATSAPP_QR_CODE,
   WHATSAPP_STATUS,
   WHATSAPP_UPDATE_STATUS,
+  WHATSAPP_LOGOUT,
+  WHATSAPP_RECONNECT,
 } from "../constant-routes";
 
 /**
@@ -72,6 +74,36 @@ export const updateWhatsAppStatus = async ( data: Record<string, unknown>, proce
   const body = withBody(data, processName);
   const { data: response } = await axiosClient.post<IResponse>(
     WHATSAPP_UPDATE_STATUS,
+    body
+  );
+  return validateApiResponse(response);
+};
+
+/**
+ * Logout from WhatsApp and clear device pairing
+ */
+export const logoutWhatsApp = async (
+  data: Record<string, unknown>,
+  processName: string = "LOGOUT_WHATSAPP"
+) => {
+  const body = withBody(data, processName);
+  const { data: response } = await axiosClient.post<IResponse>(
+    WHATSAPP_LOGOUT,
+    body
+  );
+  return validateApiResponse(response);
+};
+
+/**
+ * Reconnect WhatsApp to generate new QR code
+ */
+export const reconnectWhatsApp = async (
+  data: Record<string, unknown>,
+  processName: string = "RECONNECT_WHATSAPP"
+) => {
+  const body = withBody(data, processName);
+  const { data: response } = await axiosClient.post<IResponse>(
+    WHATSAPP_RECONNECT,
     body
   );
   return validateApiResponse(response);
