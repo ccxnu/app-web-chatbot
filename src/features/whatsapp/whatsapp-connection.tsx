@@ -5,7 +5,6 @@ import { QRCodeSVG } from 'qrcode.react'
 import {
   getWhatsAppQRCode,
   getWhatsAppStatus,
-  updateWhatsAppStatus,
   logoutWhatsApp,
   reconnectWhatsApp,
   whatsappKeys,
@@ -75,44 +74,28 @@ export default function WhatsAppConnection() {
     },
   })
 
-  // Mutation para actualizar el estado
-  const updateStatusMutation = useMutation({
-    mutationFn: (connected: boolean) =>
-      updateWhatsAppStatus({
-        sessionName,
-        connected
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: whatsappKeys.status() })
-      toast.success('Estado actualizado correctamente')
-    },
-    onError: (error: any) => {
-      toast.error(error?.info || error?.message || 'Error al actualizar estado')
-    },
-  })
-
-  // Mutation para logout
+  // Mutation para logout (disconnect + clear QR + logout)
   const logoutMutation = useMutation({
     mutationFn: () => logoutWhatsApp({ sessionName }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: whatsappKeys.status() })
       setQrCodeImage(null)
-      toast.success('Sesión cerrada correctamente. Genera un nuevo código QR para reconectar.')
+      toast.success('Sesión cerrada. Usa Reconectar para generar un nuevo QR.')
     },
     onError: (error: any) => {
       toast.error(error?.info || error?.message || 'Error al cerrar sesión')
     },
   })
 
-  // Mutation para reconnect
+  // Mutation para reconnect (clears QR, disconnects, and reconnects)
   const reconnectMutation = useMutation({
     mutationFn: () => reconnectWhatsApp({ sessionName }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: whatsappKeys.status() })
       setQrCodeImage(null)
-      toast.success('Reconectando... Genera un nuevo código QR.')
-      // Auto-generate QR after reconnect
-      setTimeout(() => generateQRCode(), 1000)
+      toast.success('Reconectando... El nuevo QR se generará automáticamente.')
+      // Auto-generate QR after reconnect with longer wait for backend to reconnect
+      setTimeout(() => generateQRCode(), 3000)
     },
     onError: (error: any) => {
       toast.error(error?.info || error?.message || 'Error al reconectar')
@@ -155,11 +138,6 @@ export default function WhatsAppConnection() {
       generateQRCode()
     }
   }, [status])
-
-  const handleDisconnect = () => {
-    updateStatusMutation.mutate(false)
-    setQrCodeImage(null)
-  }
 
   const handleLogout = () => {
     logoutMutation.mutate()
@@ -328,32 +306,21 @@ export default function WhatsAppConnection() {
                   </Button>
 
                   {status?.connected && (
-                    <>
-                      <Button
-                        variant='destructive'
-                        size='sm'
-                        onClick={handleDisconnect}
-                        disabled={updateStatusMutation.isPending}
-                        className='w-full'
-                      >
-                        Desconectar
-                      </Button>
-                      <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={handleLogout}
-                        disabled={logoutMutation.isPending}
-                        className='w-full'
-                      >
-                        <IconLogout className='mr-2 h-4 w-4' />
-                        Cerrar Sesión
-                      </Button>
-                    </>
+                    <Button
+                      variant='destructive'
+                      size='sm'
+                      onClick={handleLogout}
+                      disabled={logoutMutation.isPending}
+                      className='w-full'
+                    >
+                      <IconLogout className='mr-2 h-4 w-4' />
+                      {logoutMutation.isPending ? 'Cerrando...' : 'Cerrar Sesión'}
+                    </Button>
                   )}
 
                   {!status?.connected && (
                     <Button
-                      variant='outline'
+                      variant='default'
                       size='sm'
                       onClick={handleReconnect}
                       disabled={reconnectMutation.isPending}
