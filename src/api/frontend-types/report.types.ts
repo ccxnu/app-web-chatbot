@@ -12,12 +12,13 @@ export type ReportType = 'monthly' | 'quarterly' | 'custom';
  * Report data
  */
 export interface Report {
-  filePath: string;
+  filePath?: string;
   fileName: string;
   reportType: ReportType;
   period: string;
   generatedAt: string; // ISO 8601 timestamp
   fileSizeBytes: number;
+  pdfData?: string; // Base64 encoded PDF
 }
 
 /**

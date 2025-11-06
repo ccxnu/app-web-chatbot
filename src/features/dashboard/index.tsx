@@ -6,13 +6,14 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Button } from '@/components/ui/button'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { TopNav } from '@/components/layout/top-nav'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import {
   getAnalyticsOverview,
   getAnalyticsCosts,
@@ -20,6 +21,7 @@ import {
   getAnalyticsConversations,
   analyticsKeys
 } from '@/api/services/admin/analytics.api'
+import { generateMonthlyReport } from '@/api/services/admin/reports.api'
 import type {
   AnalyticsOverview,
   CostAnalytics,
@@ -34,8 +36,11 @@ import {
   MessageSquareIcon,
   ActivityIcon,
   TrendingUpIcon,
-  ClockIcon
+  ClockIcon,
+  FileTextIcon,
+  DownloadIcon
 } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function Dashboard() {
   // Fetch analytics data
@@ -71,6 +76,30 @@ export default function Dashboard() {
     },
   })
 
+  // Generate report mutation
+  const generateReportMutation = useMutation({
+    mutationFn: async () => {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth() + 1 // JavaScript months are 0-indexed
+      return generateMonthlyReport({ year, month })
+    },
+    onSuccess: (data) => {
+      toast.success('Reporte generado exitosamente', {
+        description: `El archivo ${data.filename} se ha descargado.`
+      })
+    },
+    onError: (error: any) => {
+      toast.error('Error al generar reporte', {
+        description: error?.message || 'Ocurrió un error al generar el reporte PDF.'
+      })
+    }
+  })
+
+  const handleGenerateReport = () => {
+    generateReportMutation.mutate()
+  }
+
   // Formatting helpers
   const formatCurrency = (value: number | null | undefined) => {
     if (value === null || value === undefined) return '$0.00'
@@ -105,6 +134,23 @@ export default function Dashboard() {
       <Main>
         <div className='mb-2 flex items-center justify-between space-y-2'>
           <h1 className='text-2xl font-bold tracking-tight'>Panel de Control</h1>
+          <Button
+            onClick={handleGenerateReport}
+            disabled={generateReportMutation.isPending}
+            className='gap-2'
+          >
+            {generateReportMutation.isPending ? (
+              <>
+                <FileTextIcon className='h-4 w-4 animate-pulse' />
+                Generando...
+              </>
+            ) : (
+              <>
+                <DownloadIcon className='h-4 w-4' />
+                Descargar Reporte Mensual
+              </>
+            )}
+          </Button>
         </div>
 
         <Tabs defaultValue='resumen' className='space-y-4'>

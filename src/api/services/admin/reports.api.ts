@@ -17,18 +17,44 @@ export const reportsKeys = {
 };
 
 /**
- * Generate monthly report
+ * Generate and download monthly report as PDF
  */
 export const generateMonthlyReport = async (
-  data: Record<string, unknown>,
+  data: { year: number; month: number },
   processName: string = "GENERATE_MONTHLY_REPORT"
 ) => {
   const body = withBody(data, processName);
-  const { data: response } = await axiosClient.post<IResponse>(
+  const response = await axiosClient.post(
     REPORTS_GENERATE_MONTHLY,
-    body
+    body,
+    {
+      responseType: 'blob', // Important: tell axios to expect binary data
+    }
   );
-  return validateApiResponse(response);
+
+  // Create a download link
+  const blob = new Blob([response.data], { type: 'application/pdf' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+
+  // Extract filename from Content-Disposition header or use default
+  const contentDisposition = response.headers['content-disposition'];
+  let filename = `reporte_mensual_${data.year}_${data.month}.pdf`;
+  if (contentDisposition) {
+    const matches = /filename="([^"]+)"/.exec(contentDisposition);
+    if (matches && matches[1]) {
+      filename = matches[1];
+    }
+  }
+
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+
+  return { success: true, filename };
 };
 
 /**
