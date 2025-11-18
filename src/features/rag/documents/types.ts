@@ -29,7 +29,7 @@ export interface CreateDocumentRequest {
   category: string;
   summary: string;
   source?: string;
-  content?: string;
+  publishedAt?: string;
 }
 
 export interface UpdateDocumentRequest extends CreateDocumentRequest {

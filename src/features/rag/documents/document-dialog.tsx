@@ -38,7 +38,7 @@ const documentSchema = z.object({
   category: z.string().min(1, "La categoría es requerida"),
   summary: z.string().min(10, "El resumen debe tener al menos 10 caracteres"),
   source: z.string().optional(),
-  content: z.string().optional(),
+  publishedAt: z.string().optional(),
 });
 
 type DocumentFormData = z.infer<typeof documentSchema>;
@@ -71,7 +71,7 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
       category: "",
       summary: "",
       source: "",
-      content: "",
+      publishedAt: "",
     },
   });
 
@@ -82,7 +82,7 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
         category: document.category,
         summary: document.summary,
         source: document.source || "",
-        content: document.content || "",
+        publishedAt: "",
       });
     } else {
       form.reset({
@@ -90,7 +90,7 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
         category: "",
         summary: "",
         source: "",
-        content: "",
+        publishedAt: "",
       });
     }
   }, [document, open, form]);
@@ -217,28 +217,6 @@ export const DocumentDialog: React.FC<DocumentDialogProps> = ({
                       disabled={isLoading}
                     />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Contenido (Opcional)</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Contenido del documento"
-                      {...field}
-                      disabled={isLoading}
-                      rows={6}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    El contenido puede ser añadido más adelante en fragmentos (chunks)
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
